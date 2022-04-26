@@ -37,13 +37,14 @@ public class AccountService {
         return account;
     }
 
-    public void withdraw(Long accountId, Long amount) {
+    public AccountEntity withdraw(Long accountId, Long amount) {
         AccountEntity account = findAccountById(accountId);
         if (account.getFunds() < amount) {
             throw new CustomException("Insufficient funds");
         }
         account.setFunds(account.getFunds() - amount);
         updateAccount(account);
+        return account;
     }
 
     public void transfer(Long fromAccountId, Long toAccountId, Long amount) {

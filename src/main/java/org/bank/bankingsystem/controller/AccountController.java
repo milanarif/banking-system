@@ -59,4 +59,10 @@ public class AccountController {
         AccountEntity account = accountService.deposit(id, amount);
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
+
+    @PatchMapping("{id}")
+    public ResponseEntity<AccountEntity> withdraw(@PathVariable Long id, @RequestBody Long amount) {
+        AccountEntity account = accountService.withdraw(id, amount);
+        return new ResponseEntity<>(account, HttpStatus.OK);
+    }
 }

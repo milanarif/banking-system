@@ -17,7 +17,7 @@ public class BankEntity {
     private List<UserEntity> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "bank")
-    private List<TransactionEntity> transactions = new ArrayList<>();
+    private List<TransferEntity> transactions = new ArrayList<>();
 
 
     public BankEntity(Long id, String name) {
@@ -48,11 +48,11 @@ public class BankEntity {
         return users;
     }
 
-    public List<TransactionEntity> getTransactions() {
+    public List<TransferEntity> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(List<TransactionEntity> transactions) {
+    public void setTransactions(List<TransferEntity> transactions) {
         this.transactions = transactions;
     }
 }

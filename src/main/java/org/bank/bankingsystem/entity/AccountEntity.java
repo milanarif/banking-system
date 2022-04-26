@@ -16,7 +16,7 @@ public class AccountEntity {
     private UserEntity user;
 
     @ManyToOne
-    private TransactionEntity transaction;
+    private TransferEntity transaction;
 
     public AccountEntity(Long accountNumber, Long funds) {
         this.accountNumber = accountNumber;
@@ -46,7 +46,7 @@ public class AccountEntity {
         return user;
     }
 
-    public TransactionEntity getTransaction() {
+    public TransferEntity getTransaction() {
         return transaction;
     }
 }
