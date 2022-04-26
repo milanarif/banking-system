@@ -30,10 +30,11 @@ public class AccountService {
         accountRepository.deleteById(accountId);
     }
 
-    public void deposit(Long accountId, Long amount) {
+    public AccountEntity deposit(Long accountId, Long amount) {
         AccountEntity account = findAccountById(accountId);
         account.setFunds(account.getFunds() + amount);
         updateAccount(account);
+        return account;
     }
 
     public void withdraw(Long accountId, Long amount) {
@@ -55,5 +56,9 @@ public class AccountService {
         toAccount.setFunds(toAccount.getFunds() + amount);
         updateAccount(fromAccount);
         updateAccount(toAccount);
+    }
+
+    public Iterable<AccountEntity> findAllAccounts() {
+        return accountRepository.findAll();
     }
 }
