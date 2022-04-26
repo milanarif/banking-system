@@ -2,9 +2,7 @@ package org.bank.bankingsystem.entity;
 
 import java.util.Collection;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public abstract class UserEntity {
@@ -12,13 +10,15 @@ public abstract class UserEntity {
     private Long socialSecurity;
     private String name;
     private String password;
-    private Collection<RoleEntity> roles;
 
-    @OneToOne
+    @ManyToOne
     private BankEntity bank;
 
     @OneToOne
     private AccountEntity account;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<RoleEntity> roles;
 
     public BankEntity getBank() {
         return bank;
