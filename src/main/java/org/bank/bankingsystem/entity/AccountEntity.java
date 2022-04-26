@@ -13,7 +13,7 @@ public class AccountEntity {
     Long funds;
 
     @ManyToOne
-    private CustomerEntity customer;
+    private UserEntity user;
 
     @ManyToOne
     private TransactionEntity transaction;
@@ -42,8 +42,8 @@ public class AccountEntity {
         this.funds = funds;
     }
 
-    public CustomerEntity getCustomer() {
-        return customer;
+    public UserEntity getUser() {
+        return user;
     }
 
     public TransactionEntity getTransaction() {
