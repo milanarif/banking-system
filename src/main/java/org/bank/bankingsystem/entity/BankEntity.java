@@ -1,11 +1,11 @@
-package org.bank.bankingsystem.entities;
+package org.bank.bankingsystem.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Bank {
+public class BankEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,24 +14,24 @@ public class Bank {
     String name;
 
     @OneToMany(mappedBy = "bank")
-    private List<Customer> customers = new ArrayList<>();
+    private List<CustomerEntity> customers = new ArrayList<>();
 
     @OneToMany(mappedBy = "bank")
-    private List<Teller> tellers = new ArrayList<>();
+    private List<TellerEntity> tellers = new ArrayList<>();
 
     @OneToMany(mappedBy = "bank")
-    private List<Transaction> transactions = new ArrayList<>();
+    private List<TransactionEntity> transactions = new ArrayList<>();
 
     @OneToOne
-    private BankDirector bankDirector;
+    private BankDirectorEntity bankDirector;
 
 
-    public Bank(Long id, String name) {
+    public BankEntity(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Bank() {
+    public BankEntity() {
     }
 
     public Long getId() {
@@ -50,35 +50,35 @@ public class Bank {
         this.name = name;
     }
 
-    public List<Customer> getCustomers() {
+    public List<CustomerEntity> getCustomers() {
         return customers;
     }
 
-    public List<Teller> getTellers() {
+    public List<TellerEntity> getTellers() {
         return tellers;
     }
 
-    public List<Transaction> getTransactions() {
+    public List<TransactionEntity> getTransactions() {
         return transactions;
     }
 
-    public BankDirector getBankDirector() {
+    public BankDirectorEntity getBankDirector() {
         return bankDirector;
     }
 
-    public void setCustomers(List<Customer> customers) {
+    public void setCustomers(List<CustomerEntity> customers) {
         this.customers = customers;
     }
 
-    public void setTellers(List<Teller> tellers) {
+    public void setTellers(List<TellerEntity> tellers) {
         this.tellers = tellers;
     }
 
-    public void setTransactions(List<Transaction> transactions) {
+    public void setTransactions(List<TransactionEntity> transactions) {
         this.transactions = transactions;
     }
 
-    public void setBankDirector(BankDirector bankDirector) {
+    public void setBankDirector(BankDirectorEntity bankDirector) {
         this.bankDirector = bankDirector;
     }
 }

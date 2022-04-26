@@ -1,4 +1,4 @@
-package org.bank.bankingsystem.entities;
+package org.bank.bankingsystem.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Customer {
+public class CustomerEntity {
 
     @Id
     Long socialSecurity;
@@ -16,17 +16,17 @@ public class Customer {
     String name;
 
     @ManyToOne
-    private Bank bank;
+    private BankEntity bank;
 
     @OneToMany(mappedBy = "customer")
-   private List<Account> accounts = new ArrayList<>();
+   private List<AccountEntity> accounts = new ArrayList<>();
 
-    public Customer(Long socialSecurity, String name) {
+    public CustomerEntity(Long socialSecurity, String name) {
         this.socialSecurity = socialSecurity;
         this.name = name;
     }
 
-    public Customer() {
+    public CustomerEntity() {
     }
 
     public Long getSocialSecurity() {
@@ -45,11 +45,11 @@ public class Customer {
         this.name = name;
     }
 
-    public Bank getBank() {
+    public BankEntity getBank() {
         return bank;
     }
 
-    public List<Account> getAccounts() {
+    public List<AccountEntity> getAccounts() {
         return accounts;
     }
 }

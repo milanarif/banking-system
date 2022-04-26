@@ -1,11 +1,11 @@
-package org.bank.bankingsystem.entities;
+package org.bank.bankingsystem.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Account {
+public class AccountEntity {
 
     @Id
     Long accountNumber;
@@ -13,17 +13,17 @@ public class Account {
     Long funds;
 
     @ManyToOne
-    private Customer customer;
+    private CustomerEntity customer;
 
     @ManyToOne
-    private  Transaction transaction;
+    private TransactionEntity transaction;
 
-    public Account(Long accountNumber, Long funds) {
+    public AccountEntity(Long accountNumber, Long funds) {
         this.accountNumber = accountNumber;
         this.funds = funds;
     }
 
-    public Account() {
+    public AccountEntity() {
     }
 
     public Long getAccountNumber() {
@@ -42,11 +42,11 @@ public class Account {
         this.funds = funds;
     }
 
-    public Customer getCustomer() {
+    public CustomerEntity getCustomer() {
         return customer;
     }
 
-    public Transaction getTransaction() {
+    public TransactionEntity getTransaction() {
         return transaction;
     }
 }

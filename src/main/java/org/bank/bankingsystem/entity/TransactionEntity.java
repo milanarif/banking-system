@@ -1,4 +1,4 @@
-package org.bank.bankingsystem.entities;
+package org.bank.bankingsystem.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Transaction {
+public class TransactionEntity {
 
     @Id
     Long transactionID;
@@ -18,19 +18,19 @@ public class Transaction {
     String date;
 
     @OneToMany(mappedBy = "transaction")
-    private List<Account> accounts = new ArrayList<>();
+    private List<AccountEntity> accounts = new ArrayList<>();
 
     @ManyToOne
-    private Bank bank;
+    private BankEntity bank;
 
 
-    public Transaction(Long transactionID, Long funds, String date) {
+    public TransactionEntity(Long transactionID, Long funds, String date) {
         this.transactionID = transactionID;
         this.funds = funds;
         this.date = date;
     }
 
-    public Transaction() {
+    public TransactionEntity() {
     }
 
     public Long getTransactionID() {
@@ -57,7 +57,7 @@ public class Transaction {
         this.date = date;
     }
 
-    public List<Account> getAccounts() {
+    public List<AccountEntity> getAccounts() {
         return accounts;
     }
 }

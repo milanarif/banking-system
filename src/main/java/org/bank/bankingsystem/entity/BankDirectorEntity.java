@@ -1,11 +1,11 @@
-package org.bank.bankingsystem.entities;
+package org.bank.bankingsystem.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class BankDirector {
+public class BankDirectorEntity {
 
     @Id
     Long socailSecurity;
@@ -13,14 +13,14 @@ public class BankDirector {
     String name;
 
     @OneToOne
-    private Bank bank;
+    private BankEntity bank;
 
-    public BankDirector(Long socailSecurity, String name) {
+    public BankDirectorEntity(Long socailSecurity, String name) {
         this.socailSecurity = socailSecurity;
         this.name = name;
     }
 
-    public BankDirector() {
+    public BankDirectorEntity() {
     }
 
     public Long getSocailSecurity() {

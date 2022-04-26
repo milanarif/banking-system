@@ -1,11 +1,11 @@
-package org.bank.bankingsystem.entities;
+package org.bank.bankingsystem.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Teller {
+public class TellerEntity {
 
     @Id
     Long socialSecurity;
@@ -13,14 +13,14 @@ public class Teller {
     String name;
 
     @ManyToOne
-    private Bank bank;
+    private BankEntity bank;
 
-    public Teller(Long socialSecurity, String name) {
+    public TellerEntity(Long socialSecurity, String name) {
         this.socialSecurity = socialSecurity;
         this.name = name;
     }
 
-    public Teller() {
+    public TellerEntity() {
     }
 
     public Long getSocialSecurity() {
