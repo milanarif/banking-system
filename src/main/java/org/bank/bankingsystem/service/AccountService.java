@@ -62,4 +62,8 @@ public class AccountService {
     public Iterable<AccountEntity> findAllAccounts() {
         return accountRepository.findAll();
     }
+
+    public Long getBalance(Long accountId) {
+        return findAccountById(accountId).getFunds();
+    }
 }

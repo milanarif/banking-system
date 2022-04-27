@@ -20,6 +20,18 @@ public abstract class UserEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<RoleEntity> roles;
 
+    public UserEntity() {
+    }
+
+    public UserEntity(Long socialSecurity, String name, String password, BankEntity bank, AccountEntity account, Collection<RoleEntity> roles) {
+        this.socialSecurity = socialSecurity;
+        this.name = name;
+        this.password = password;
+        this.bank = bank;
+        this.account = account;
+        this.roles = roles;
+    }
+
     public BankEntity getBank() {
         return bank;
     }

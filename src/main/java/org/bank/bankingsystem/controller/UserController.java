@@ -21,4 +21,22 @@ public class UserController {
         UserEntity createdUser = userService.createUser(user);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity<UserEntity> findUserById(@PathVariable Long id) {
+        UserEntity user = userService.findUserById(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<UserEntity> updateUser(@RequestBody UserEntity user) {
+        UserEntity updatedUser = userService.updateUser(user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<UserEntity> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
