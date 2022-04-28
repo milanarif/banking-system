@@ -1,7 +1,10 @@
 package org.bank.bankingsystem.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Set;
 
 @Entity
 public class RoleEntity {
@@ -11,25 +14,14 @@ public class RoleEntity {
     private Long id;
 
     private String name;
+
     @ManyToMany(mappedBy = "roles")
-    private Collection<UserEntity> users;
-
-    @ManyToMany
-    @JoinTable(
-        name = "roles_privileges", 
-        joinColumns = @JoinColumn(
-          name = "role_id", referencedColumnName = "id"), 
-        inverseJoinColumns = @JoinColumn(
-          name = "privilege_id", referencedColumnName = "id"))
-    private Collection<PrivilegeEntity> privileges;
-
+    private Set<UserEntity> users;
 
     public RoleEntity() {
-        super();
     }
 
-    public RoleEntity(final String name) {
-        super();
+    public RoleEntity(String name) {
         this.name = name;
     }
 
@@ -37,7 +29,7 @@ public class RoleEntity {
         return id;
     }
 
-    public void setId(final Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -45,24 +37,17 @@ public class RoleEntity {
         return name;
     }
 
-    public void setName(final String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public Collection<UserEntity> getUsers() {
+    @JsonIgnore
+    public Set<UserEntity> getUsers() {
         return users;
     }
 
-    public void setUsers(final Collection<UserEntity> users) {
+    public void setUsers(Set<UserEntity> users) {
         this.users = users;
-    }
-
-    public Collection<PrivilegeEntity> getPrivileges() {
-        return privileges;
-    }
-
-    public void setPrivileges(final Collection<PrivilegeEntity> privileges) {
-        this.privileges = privileges;
     }
 
     @Override
@@ -74,7 +59,7 @@ public class RoleEntity {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }

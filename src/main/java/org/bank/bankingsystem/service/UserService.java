@@ -1,9 +1,8 @@
 package org.bank.bankingsystem.service;
 
-import org.bank.bankingsystem.entity.AccountEntity;
+import org.bank.bankingsystem.entity.RoleEntity;
 import org.bank.bankingsystem.entity.UserEntity;
 import org.bank.bankingsystem.exception.CustomException;
-import org.bank.bankingsystem.repository.AccountRepository;
 import org.bank.bankingsystem.repository.RoleRepository;
 import org.bank.bankingsystem.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,14 +12,12 @@ import org.springframework.stereotype.Service;
 public class UserService {
     
     private final UserRepository userRepository;
-    private final AccountRepository accountRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     
 
-    public UserService(UserRepository userRepository, AccountRepository accountRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.accountRepository = accountRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -31,13 +28,15 @@ public class UserService {
 
     public UserEntity createUser(UserEntity user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setAccount(accountRepository.save(new AccountEntity()));
-        user.addRole(roleRepository.findByName("ROLE_USER"));
+        RoleEntity roleToAdd = roleRepository.findByName("ROLE_USER");
+        //TODO
+        System.out.println(roleToAdd.toString());
+        user.addRole(roleToAdd);
         return userRepository.save(user);
     }
 
     public UserEntity updateUser(UserEntity user) {
-        UserEntity userEntity = findUserById(user.getSocialSecurity());
+        UserEntity userEntity = findUserById(user.getId());
         userEntity.setName(user.getName());
         userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(userEntity);

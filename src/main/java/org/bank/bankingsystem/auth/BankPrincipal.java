@@ -21,7 +21,7 @@ public class BankPrincipal implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        Collection<RoleEntity> roles = userEntity.getRoles();
+        Set<RoleEntity> roles = userEntity.getRoles();
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>(roles.size());
 
         for (RoleEntity role : roles) {

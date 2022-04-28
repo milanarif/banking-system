@@ -1,14 +1,21 @@
 package org.bank.bankingsystem.entity;
 
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.*;
 
 @Entity
-public abstract class UserEntity {
+public class UserEntity {
     @Id
-    private Long socialSecurity;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     private String name;
+
+    @Column(unique = true)
+    private String username;
+
     private String password;
 
     @ManyToOne
@@ -18,18 +25,17 @@ public abstract class UserEntity {
     private AccountEntity account;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Collection<RoleEntity> roles;
+    private Set<RoleEntity> roles = new HashSet<>();
 
     public UserEntity() {
     }
 
-    public UserEntity(Long socialSecurity, String name, String password, BankEntity bank, AccountEntity account, Collection<RoleEntity> roles) {
-        this.socialSecurity = socialSecurity;
-        this.name = name;
-        this.password = password;
-        this.bank = bank;
-        this.account = account;
-        this.roles = roles;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public BankEntity getBank() {
@@ -41,10 +47,10 @@ public abstract class UserEntity {
     public void setPassword(String password) {
         this.password = password;
     }
-    public Collection<RoleEntity> getRoles() {
+    public Set<RoleEntity> getRoles() {
         return roles;
     }
-    public void setRoles(Collection<RoleEntity> roles) {
+    public void setRoles(Set<RoleEntity> roles) {
         this.roles = roles;
     }
     public AccountEntity getAccount() {
@@ -53,11 +59,8 @@ public abstract class UserEntity {
     public void setAccount(AccountEntity account) {
         this.account = account;
     }
-    public Long getSocialSecurity() {
-        return socialSecurity;
-    }
-    public void setSocialSecurity(Long socialSecurity) {
-        this.socialSecurity = socialSecurity;
+    public Long getId() {
+        return id;
     }
     public String getName() {
         return name;
@@ -69,9 +72,11 @@ public abstract class UserEntity {
         this.bank = bank;
     }
     public void addRole(RoleEntity role) {
-        this.roles.add(role);
+        roles.add(role);
+        role.getUsers().add(this);
     }
     public void removeRole(RoleEntity role) {
-        this.roles.remove(role);
+        roles.remove(role);
+        role.getUsers().remove(this);
     }
 }

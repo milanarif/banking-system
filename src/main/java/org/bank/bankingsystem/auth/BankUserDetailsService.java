@@ -16,12 +16,10 @@ public class BankUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    //TODO: Change to findBySocialSecurity
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        //UserEntity userEntity = userRepository.findById();
-        UserEntity userEntity = null;
-        
+        UserEntity userEntity = userRepository.findByUsername(username);
+
         if (userEntity == null) {
             throw new UsernameNotFoundException("Can't find user with username: " + username);
         }
@@ -29,4 +27,6 @@ public class BankUserDetailsService implements UserDetailsService {
         return new BankPrincipal(userEntity);
 
     }
+
+    
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("account")
+@RequestMapping("accounts")
 public class AccountController {
     
     private final AccountService accountService;
@@ -23,7 +23,7 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<AccountEntity> createAccount(@RequestBody AccountEntity account) {
         AccountEntity createdAccount = accountService.createAccount(account);
         return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
