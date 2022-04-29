@@ -33,6 +33,14 @@ public class GlobalExceptionHandler  extends ResponseEntityExceptionHandler {
         return buildResponseEntity(new ApiError(HttpStatus.IM_USED, errorMessage, exception));
     }
 
+    @ExceptionHandler({CustomException.AlreadyExistsException.class})
+    public ResponseEntity<Object> insufficientStorage(CustomException exception){
+        logger.info(exception.getClass().getName());
+        String errorMessage = "Custom exception happened";
+
+        return buildResponseEntity(new ApiError(HttpStatus.INSUFFICIENT_STORAGE, errorMessage, exception));
+    }
+
 
 
 
