@@ -4,4 +4,16 @@ public class CustomException extends RuntimeException {
     public CustomException(String message) {
         super(message);
     }
+
+    public static class NotFoundException extends CustomException{
+        public NotFoundException(String message){
+            super(message);
+        }
+    }
+
+    public static class AlreadyExistsException extends CustomException{
+        public AlreadyExistsException(String message){
+            super(message);
+        }
+    }
 }

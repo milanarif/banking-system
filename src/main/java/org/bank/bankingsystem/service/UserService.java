@@ -8,6 +8,8 @@ import org.bank.bankingsystem.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     
@@ -23,7 +25,7 @@ public class UserService {
     }
 
     public UserEntity findUserById(Long socialSecurity) {
-        return userRepository.findById(socialSecurity).orElseThrow(() -> new CustomException("User not found"));
+        return userRepository.findById(socialSecurity).orElseThrow(() -> new CustomException.NotFoundException("User with id: "+ socialSecurity +" could not be found in database."));
     }
 
     public UserEntity createUser(UserEntity user) {
@@ -32,6 +34,13 @@ public class UserService {
         //TODO
         System.out.println(roleToAdd.toString());
         user.addRole(roleToAdd);
+
+        List<UserEntity> users = (List<UserEntity>) findAllUsers();
+
+        for (UserEntity u: users) {
+if(u.getUsername() == user.getUsername())
+    throw new CustomException.AlreadyExistsException("Username: "+ u.getUsername() +" already Exists.");
+        }
         return userRepository.save(user);
     }
 
