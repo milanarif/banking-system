@@ -12,11 +12,11 @@ import java.util.List;
 
 @Service
 public class UserService {
-    
+
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    
+
 
     public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -24,8 +24,8 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserEntity findUserById(Long socialSecurity) {
-        return userRepository.findById(socialSecurity).orElseThrow(() -> new CustomException.NotFoundException("User with id: "+ socialSecurity +" could not be found in database."));
+    public UserEntity findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new CustomException.NotFoundException("User with id: " + id + " could not be found in database."));
     }
 
     public UserEntity createUser(UserEntity user) {
@@ -36,10 +36,9 @@ public class UserService {
         user.addRole(roleToAdd);
 
         List<UserEntity> users = (List<UserEntity>) findAllUsers();
-
-        for (UserEntity u: users) {
-if(u.getUsername() == user.getUsername())
-    throw new CustomException.AlreadyExistsException("Username: "+ u.getUsername() +" already Exists.");
+        for (UserEntity u : users) {
+            if (u.getUsername() == user.getUsername())
+                throw new CustomException.AlreadyExistsException("Username: " + u.getUsername() + " already Exists.");
         }
         return userRepository.save(user);
     }
@@ -47,7 +46,12 @@ if(u.getUsername() == user.getUsername())
     public UserEntity updateUser(UserEntity user) {
         UserEntity userEntity = findUserById(user.getId());
         userEntity.setName(user.getName());
+        userEntity.setUsername(user.getUsername());
         userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        if (userEntity.getUsername() == user.getUsername())
+            throw new CustomException.AlreadyExistsException("Username: " + user.getUsername() + " already Exists.");
+        
         return userRepository.save(userEntity);
     }
 
@@ -57,7 +61,11 @@ if(u.getUsername() == user.getUsername())
     }
 
     public Iterable<UserEntity> findAllUsers() {
-        return userRepository.findAll();
+      List<UserEntity> users = (List<UserEntity>) userRepository.findAll();
+      if(users.isEmpty())
+          throw new CustomException.NotFoundException("No Users was found in database.");
+
+      return users;
     }
 
     public UserEntity addRole(Long socialSecurity, String roleName) {

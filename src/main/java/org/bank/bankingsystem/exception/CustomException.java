@@ -16,4 +16,8 @@ public class CustomException extends RuntimeException {
             super(message);
         }
     }
+
+    public static class InsufficientStorage extends CustomException{
+        public InsufficientStorage(String message) { super(message); }
+    }
 }
