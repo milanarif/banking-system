@@ -1,17 +1,27 @@
 package org.bank.bankingsystem.service;
 
 import org.bank.bankingsystem.entity.AccountEntity;
+import org.bank.bankingsystem.entity.BankEntity;
+import org.bank.bankingsystem.entity.TransferEntity;
 import org.bank.bankingsystem.exception.CustomException;
 import org.bank.bankingsystem.repository.AccountRepository;
+import org.bank.bankingsystem.repository.TransactionRepository;
+import org.hibernate.TransactionException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AccountService {
     
     private final AccountRepository accountRepository;
 
-    public AccountService(AccountRepository accountRepository) {
+    private final TransactionRepository transactionRepository;
+
+    public AccountService(AccountRepository accountRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     public AccountEntity findAccountById(Long accountId) {
@@ -47,7 +57,7 @@ public class AccountService {
         return account;
     }
 
-    public void transfer(Long fromAccountId, Long toAccountId, Long amount) {
+    public List<AccountEntity> transfer(Long fromAccountId, Long toAccountId, Long amount) {
         AccountEntity fromAccount = findAccountById(fromAccountId);
         AccountEntity toAccount = findAccountById(toAccountId);
         if (fromAccount.getFunds() < amount) {
@@ -57,6 +67,20 @@ public class AccountService {
         toAccount.setFunds(toAccount.getFunds() + amount);
         updateAccount(fromAccount);
         updateAccount(toAccount);
+
+        BankEntity bank = new BankEntity("Coolbank");
+
+        TransferEntity transaction = new TransferEntity(amount, fromAccount, toAccount, bank);
+
+        fromAccount.addTransaction(transaction);
+        toAccount.addTransaction(transaction);
+        transactionRepository.save(transaction);
+
+        List<AccountEntity> accounts = new ArrayList<>();
+
+        accounts.add(fromAccount);
+        accounts.add(toAccount);
+        return accounts;
     }
 
     public Iterable<AccountEntity> findAllAccounts() {

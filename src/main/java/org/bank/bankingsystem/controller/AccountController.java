@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import java.util.List;
+
 @RestController
 @RequestMapping("accounts")
 public class AccountController {
@@ -50,6 +54,14 @@ public class AccountController {
     @DeleteMapping("{id}")
     public ResponseEntity<AccountEntity> deleteAccount(@PathVariable Long id) {
         accountService.deleteAccount(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/transaction/{senderId}/{reciverId}")
+    public ResponseEntity<List<AccountEntity>> transaction(@PathParam("senderId") Long senderId,
+                                                           @PathParam("reciverId") Long reciverId,
+                                                           @QueryParam("amount") Long amount  ) {
+       List<AccountEntity> accounts = accountService.transfer(senderId, reciverId, amount);
+        return new ResponseEntity<>(accounts, HttpStatus.OK);
     }
 }

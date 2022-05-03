@@ -1,16 +1,14 @@
 package org.bank.bankingsystem.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class AccountEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long accountNumber;
 
     Long funds;
@@ -18,8 +16,8 @@ public class AccountEntity {
     @ManyToOne
     private UserEntity user;
 
-    @ManyToOne
-    private TransferEntity transaction;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST)
+    private List<TransferEntity> transactions = new ArrayList<>();
 
     public AccountEntity(Long accountNumber, Long funds) {
         this.accountNumber = accountNumber;
@@ -27,6 +25,11 @@ public class AccountEntity {
     }
 
     public AccountEntity() {
+    }
+
+    public void addTransaction(TransferEntity transaction){
+        transactions.add(transaction);
+       transaction.setAccount(this);
     }
 
     public Long getAccountNumber() {
@@ -49,8 +52,12 @@ public class AccountEntity {
         return user;
     }
 
-    public TransferEntity getTransaction() {
-        return transaction;
+    public List<TransferEntity> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<TransferEntity> transactions) {
+        this.transactions = transactions;
     }
 }
 

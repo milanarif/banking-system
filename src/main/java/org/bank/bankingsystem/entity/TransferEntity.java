@@ -15,7 +15,7 @@ import javax.persistence.PrePersist;
 public class TransferEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long transferId;
 
     Long amount;
@@ -29,6 +29,9 @@ public class TransferEntity {
     AccountEntity receiverAccount;
 
     @ManyToOne
+    private AccountEntity account;
+
+    @ManyToOne
     private BankEntity bank;
 
     @PrePersist
@@ -37,8 +40,7 @@ public class TransferEntity {
     }
 
 
-    public TransferEntity(Long transferId, Long amount, AccountEntity senderAccount, AccountEntity receiverAccount, BankEntity bank) {
-        this.transferId = transferId;
+    public TransferEntity(Long amount, AccountEntity senderAccount, AccountEntity receiverAccount, BankEntity bank) {
         this.amount = amount;
         this.senderAccount = senderAccount;
         this.receiverAccount = receiverAccount;
@@ -66,5 +68,17 @@ public class TransferEntity {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public void setAccount(AccountEntity account) {
+        this.account = account;
+    }
+
+    public void setSenderAccount(AccountEntity senderAccount) {
+        this.senderAccount = senderAccount;
+    }
+
+    public void setReceiverAccount(AccountEntity receiverAccount) {
+        this.receiverAccount = receiverAccount;
     }
 }
