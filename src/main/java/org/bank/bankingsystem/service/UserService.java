@@ -51,9 +51,9 @@ public class UserService {
         user.addRole(roleToAdd);
 
         AccountEntity account = new AccountEntity(1000L);
+        userRepository.save(user);
         createAccount(user, account);
-
-        return userRepository.save(user);
+        return user;
     }
 
     public UserEntity updateUser(UserEntity user) {
@@ -70,6 +70,8 @@ public class UserService {
 
     public void deleteUser(Long socialSecurity) {
 UserEntity user = findUserById(socialSecurity);
+AccountEntity account = user.getAccount();
+accountRepository.delete(account);
         userRepository.delete(user);
     }
 

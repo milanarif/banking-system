@@ -1,6 +1,5 @@
 package org.bank.bankingsystem.entity;
 
-exceptionHandler
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -19,6 +18,9 @@ public class AccountEntity {
 
 
     @OneToOne
+    @JoinTable(name = "account_user",
+            joinColumns = {@JoinColumn(name = "account_number", referencedColumnName = "accountNumber")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")})
     private UserEntity user;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST)
@@ -27,11 +29,13 @@ public class AccountEntity {
     public AccountEntity(Long funds) {
         this.funds = funds;
     }
+
     public AccountEntity() {
     }
-    public void addTransaction(TransferEntity transaction){
+
+    public void addTransaction(TransferEntity transaction) {
         transactions.add(transaction);
-       transaction.setAccount(this);
+        transaction.setAccount(this);
     }
 
     public Long getAccountNumber() {
@@ -41,6 +45,7 @@ public class AccountEntity {
     public void setAccountNumber(Long accountNumber) {
         this.accountNumber = accountNumber;
     }
+
     @JsonIgnore
     public UserEntity getUser() {
         return user;
@@ -57,6 +62,7 @@ public class AccountEntity {
     public void setUser(UserEntity user) {
         this.user = user;
     }
+
     public List<TransferEntity> getTransactions() {
         return transactions;
     }
