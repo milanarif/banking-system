@@ -1,6 +1,5 @@
 package org.bank.bankingsystem.entity;
 
-exceptionHandler
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
