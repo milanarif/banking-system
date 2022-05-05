@@ -38,6 +38,12 @@ public class UserService {
     }
 
     public UserEntity createUser(UserEntity user) {
+        List<UserEntity> users = (List<UserEntity>) userRepository.findAll();
+        for (UserEntity u : users) {
+            if (u.getUsername().contentEquals(user.getUsername())) {
+                throw new CustomException.AlreadyExistsException("Username: " + user.getUsername() + " already Exists.");
+            }
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         RoleEntity roleToAdd = roleRepository.findByName("ROLE_USER");
         //TODO
@@ -47,11 +53,6 @@ public class UserService {
         AccountEntity account = new AccountEntity(1000L);
         createAccount(user, account);
 
-        List<UserEntity> users = (List<UserEntity>) userRepository.findAll();
-        for (UserEntity u : users) {
-            if (u.getUsername() == user.getUsername())
-                throw new CustomException.AlreadyExistsException("Username: " + u.getUsername() + " already Exists.");
-        }
         return userRepository.save(user);
     }
 
@@ -68,8 +69,8 @@ public class UserService {
     }
 
     public void deleteUser(Long socialSecurity) {
-        UserEntity userEntity = findUserById(socialSecurity);
-        userRepository.delete(userEntity);
+UserEntity user = findUserById(socialSecurity);
+        userRepository.delete(user);
     }
 
     public Iterable<UserEntity> findAllUsers() {
