@@ -1,21 +1,20 @@
 package org.bank.bankingsystem.controller;
 
 import org.bank.bankingsystem.entity.AccountEntity;
+import org.bank.bankingsystem.entity.TransferEntity;
 import org.bank.bankingsystem.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
-import java.util.List;
 
 @RestController
 @RequestMapping("accounts")
@@ -52,11 +51,11 @@ public class AccountController {
     }
 
     @PutMapping("/transaction/{senderId}/{reciverId}")
-    public ResponseEntity<List<AccountEntity>> transaction(@PathParam("senderId") Long senderId,
-                                                           @PathParam("reciverId") Long reciverId,
+    public ResponseEntity<TransferEntity> transaction(@PathVariable Long senderId,
+                                                           @PathVariable Long reciverId,
                                                            @QueryParam("amount") Long amount) {
-        List<AccountEntity> accounts = accountService.transfer(senderId, reciverId, amount);
-        return new ResponseEntity<>(accounts, HttpStatus.OK);
+        TransferEntity transfer = accountService.transfer(senderId, reciverId, amount);
+        return new ResponseEntity<TransferEntity>((MultiValueMap<String, String>) transfer, HttpStatus.OK);
     }
 
 }
