@@ -20,8 +20,7 @@ public class BankEntity {
     private List<TransferEntity> transactions = new ArrayList<>();
 
 
-    public BankEntity(Long id, String name) {
-        this.id = id;
+    public BankEntity(String name) {
         this.name = name;
     }
 

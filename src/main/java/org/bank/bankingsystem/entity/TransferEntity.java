@@ -1,7 +1,7 @@
 package org.bank.bankingsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +29,9 @@ public class TransferEntity {
     AccountEntity receiverAccount;
 
     @ManyToOne
+    private AccountEntity account;
+
+    @ManyToOne
     private BankEntity bank;
 
     @PrePersist
@@ -37,8 +40,7 @@ public class TransferEntity {
     }
 
 
-    public TransferEntity(Long transferId, Long amount, AccountEntity senderAccount, AccountEntity receiverAccount, BankEntity bank) {
-        this.transferId = transferId;
+    public TransferEntity(Long amount, AccountEntity senderAccount, AccountEntity receiverAccount, BankEntity bank) {
         this.amount = amount;
         this.senderAccount = senderAccount;
         this.receiverAccount = receiverAccount;
@@ -46,6 +48,24 @@ public class TransferEntity {
     }
 
     public TransferEntity() {
+    }
+
+    public Long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Long amount) {
+        this.amount = amount;
+    }
+
+    @JsonIgnore
+    public AccountEntity getSenderAccount() {
+        return senderAccount;
+    }
+
+    @JsonIgnore
+    public AccountEntity getReceiverAccount() {
+        return receiverAccount;
     }
 
     public Long getTransferId() {
@@ -66,5 +86,17 @@ public class TransferEntity {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public void setAccount(AccountEntity account) {
+        this.account = account;
+    }
+
+    public void setSenderAccount(AccountEntity senderAccount) {
+        this.senderAccount = senderAccount;
+    }
+
+    public void setReceiverAccount(AccountEntity receiverAccount) {
+        this.receiverAccount = receiverAccount;
     }
 }
