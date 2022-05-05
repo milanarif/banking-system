@@ -1,10 +1,12 @@
 package org.bank.bankingsystem.entity;
 
+exceptionHandler
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Entity
 public class AccountEntity {
@@ -15,10 +17,8 @@ public class AccountEntity {
 
     Long funds;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(name="account_user",
-    joinColumns = {@JoinColumn(name = "account_number", referencedColumnName = "accountNumber")},
-    inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")})
+
+    @OneToOne
     private UserEntity user;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST)
