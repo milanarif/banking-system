@@ -3,33 +3,34 @@ package org.bank.bankingsystem.service;
 import org.bank.bankingsystem.entity.AccountEntity;
 import org.bank.bankingsystem.entity.BankEntity;
 import org.bank.bankingsystem.entity.TransferEntity;
+import org.bank.bankingsystem.entity.UserEntity;
 import org.bank.bankingsystem.exception.CustomException;
 import org.bank.bankingsystem.repository.AccountRepository;
 import org.bank.bankingsystem.repository.TransactionRepository;
-import org.hibernate.TransactionException;
+import org.bank.bankingsystem.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountService {
     
     private final AccountRepository accountRepository;
 
+    private final UserRepository userRepository;
+
     private final TransactionRepository transactionRepository;
 
-    public AccountService(AccountRepository accountRepository, TransactionRepository transactionRepository) {
+    public AccountService(AccountRepository accountRepository, UserRepository userRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
     }
 
     public AccountEntity findAccountById(Long accountId) {
         return accountRepository.findById(accountId).orElseThrow(() -> new CustomException.NotFoundException("Account with account ID: " + accountId + " was not found in database."));
-    }
-
-    public AccountEntity createAccount(AccountEntity account) {
-        return accountRepository.save(account);
     }
 
     public AccountEntity updateAccount(AccountEntity account) {

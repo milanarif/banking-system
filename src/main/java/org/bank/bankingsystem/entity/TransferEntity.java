@@ -15,7 +15,7 @@ import javax.persistence.PrePersist;
 public class TransferEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Long transferId;
 
     Long amount;

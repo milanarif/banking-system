@@ -1,8 +1,10 @@
 package org.bank.bankingsystem.service;
 
+import org.bank.bankingsystem.entity.AccountEntity;
 import org.bank.bankingsystem.entity.RoleEntity;
 import org.bank.bankingsystem.entity.UserEntity;
 import org.bank.bankingsystem.exception.CustomException;
+import org.bank.bankingsystem.repository.AccountRepository;
 import org.bank.bankingsystem.repository.RoleRepository;
 import org.bank.bankingsystem.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,18 +16,25 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, AccountRepository accountRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.accountRepository = accountRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     public UserEntity findUserById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new CustomException.NotFoundException("User with id: " + id + " could not be found in database."));
+    }
+
+    public void createAccount(UserEntity user, AccountEntity account) {
+        account.setUser(user);
+        accountRepository.save(account);
     }
 
     public UserEntity createUser(UserEntity user) {
@@ -35,7 +44,10 @@ public class UserService {
         System.out.println(roleToAdd.toString());
         user.addRole(roleToAdd);
 
-        List<UserEntity> users = (List<UserEntity>) findAllUsers();
+        AccountEntity account = new AccountEntity(1000L);
+        createAccount(user, account);
+
+        List<UserEntity> users = (List<UserEntity>) userRepository.findAll();
         for (UserEntity u : users) {
             if (u.getUsername() == user.getUsername())
                 throw new CustomException.AlreadyExistsException("Username: " + u.getUsername() + " already Exists.");
@@ -61,12 +73,12 @@ public class UserService {
     }
 
     public Iterable<UserEntity> findAllUsers() {
-      List<UserEntity> users = (List<UserEntity>) userRepository.findAll();
-      if(users.isEmpty())
+        Iterable<UserEntity> users = (List<UserEntity>) userRepository.findAll();
+      if(users.equals(null))
           throw new CustomException.NotFoundException("No Users was found in database.");
-
       return users;
     }
+
 
     public UserEntity addRole(Long socialSecurity, String roleName) {
         UserEntity userEntity = findUserById(socialSecurity);

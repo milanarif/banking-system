@@ -8,12 +8,11 @@ import javax.persistence.*;
 @Entity
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
 
-    @Column(unique = true)
     private String username;
 
     private String password;
@@ -21,7 +20,7 @@ public class UserEntity {
     @ManyToOne
     private BankEntity bank;
 
-    @OneToOne
+    @OneToOne(mappedBy = "user")
     private AccountEntity account;
 
     @ManyToMany(fetch = FetchType.EAGER)

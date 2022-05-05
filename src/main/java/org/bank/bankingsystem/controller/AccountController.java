@@ -20,17 +20,11 @@ import java.util.List;
 @RestController
 @RequestMapping("accounts")
 public class AccountController {
-    
+
     private final AccountService accountService;
 
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
-    }
-
-    @PostMapping("/create")
-    public ResponseEntity<AccountEntity> createAccount(@RequestBody AccountEntity account) {
-        AccountEntity createdAccount = accountService.createAccount(account);
-        return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
@@ -60,8 +54,9 @@ public class AccountController {
     @PutMapping("/transaction/{senderId}/{reciverId}")
     public ResponseEntity<List<AccountEntity>> transaction(@PathParam("senderId") Long senderId,
                                                            @PathParam("reciverId") Long reciverId,
-                                                           @QueryParam("amount") Long amount  ) {
-       List<AccountEntity> accounts = accountService.transfer(senderId, reciverId, amount);
+                                                           @QueryParam("amount") Long amount) {
+        List<AccountEntity> accounts = accountService.transfer(senderId, reciverId, amount);
         return new ResponseEntity<>(accounts, HttpStatus.OK);
     }
+
 }
