@@ -1,6 +1,12 @@
 package org.bank.bankingsystem.entity;
 
+exceptionHandler
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 public class AccountEntity {
@@ -11,18 +17,21 @@ public class AccountEntity {
 
     Long funds;
 
+
     @OneToOne
     private UserEntity user;
 
-    @ManyToOne
-    private TransferEntity transaction;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST)
+    private List<TransferEntity> transactions = new ArrayList<>();
 
-    public AccountEntity(Long accountNumber, Long funds) {
-        this.accountNumber = accountNumber;
+    public AccountEntity(Long funds) {
         this.funds = funds;
     }
-
     public AccountEntity() {
+    }
+    public void addTransaction(TransferEntity transaction){
+        transactions.add(transaction);
+       transaction.setAccount(this);
     }
 
     public Long getAccountNumber() {
@@ -31,6 +40,10 @@ public class AccountEntity {
 
     public void setAccountNumber(Long accountNumber) {
         this.accountNumber = accountNumber;
+    }
+    @JsonIgnore
+    public UserEntity getUser() {
+        return user;
     }
 
     public Long getFunds() {
@@ -41,12 +54,15 @@ public class AccountEntity {
         this.funds = funds;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+    public List<TransferEntity> getTransactions() {
+        return transactions;
     }
 
-    public TransferEntity getTransaction() {
-        return transaction;
+    public void setTransactions(List<TransferEntity> transactions) {
+        this.transactions = transactions;
     }
 }
 
