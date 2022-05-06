@@ -13,7 +13,6 @@ public class UserEntity {
 
     private String name;
 
-    @Column(unique = true)
     private String username;
 
     private String password;
@@ -21,7 +20,7 @@ public class UserEntity {
     @ManyToOne
     private BankEntity bank;
 
-    @OneToOne
+    @OneToOne(mappedBy = "user")
     private AccountEntity account;
 
     @ManyToMany(fetch = FetchType.EAGER)

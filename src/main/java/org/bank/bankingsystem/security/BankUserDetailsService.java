@@ -1,4 +1,4 @@
-package org.bank.bankingsystem.auth;
+package org.bank.bankingsystem.security;
 
 import org.bank.bankingsystem.entity.UserEntity;
 import org.bank.bankingsystem.repository.UserRepository;
@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BankUserDetailsService implements UserDetailsService {
+public class BankUserDetailsService implements UserDetailsService{
 
     private final UserRepository userRepository;
 
@@ -24,9 +24,7 @@ public class BankUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Can't find user with username: " + username);
         }
 
-        return new BankPrincipal(userEntity);
-
+        return new BankUserPrincipal(userEntity);
     }
 
-    
 }
