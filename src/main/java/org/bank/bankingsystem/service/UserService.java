@@ -29,8 +29,6 @@ public class UserService {
     public UserEntity createUser(UserEntity user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         RoleEntity roleToAdd = roleRepository.findByName("ROLE_USER");
-        //TODO
-        System.out.println(roleToAdd.toString());
         user.addRole(roleToAdd);
         return userRepository.save(user);
     }
