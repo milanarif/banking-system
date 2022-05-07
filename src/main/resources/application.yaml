@@ -9,6 +9,8 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
-
 jwt:
   secret: mylittlesecret
+
+msg:
+  title: Banking System 2000

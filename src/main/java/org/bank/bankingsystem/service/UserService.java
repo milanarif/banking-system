@@ -47,10 +47,6 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         RoleEntity roleToAdd = roleRepository.findByName("ROLE_USER");
         user.addRole(roleToAdd);
-
-        AccountEntity account = new AccountEntity(1000L);
-        createAccount(user, account);
-
         return userRepository.save(user);
     }
 
