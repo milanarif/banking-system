@@ -1,27 +1,25 @@
 # spring:
 #  datasource:
-#    url: jdbc:mysql://localhost:3306/bankdb
+#    url: jdbc:mysql://mysqldb:3306/bankdb
 #    username: root
-#    password: password
+#    password: root
 #  jpa:
 #    hibernate.ddl-auto: update
 #    properties:
 #      hibernate:
 #        dialect: org.hibernate.dialect.MySQL8Dialect
 
-spring:
-  datasource:
-    continue-on-error: true
-    initialization-mode: always
-    password: VerySecretPassword
-  cloud:
-    gcp:
-      sql:
-        database-name: bankdb
-        instance-connection-name: banking-system-349517:europe-west3:bankdb
+#spring:
+#  datasource:
+#    continue-on-error: true
+#    initialization-mode: always
+#    password: VerySecretPassword
+#  cloud:
+#    gcp:
+#      sql:
+#        database-name: bankdb
+#        instance-connection-name: banking-system-349517:europe-west3:bankdb
+#
 
-jwt:
-  secret: mylittlesecret
-
-msg:
-  title: Banking System 2000
+# msg:
+#  title: Banking System 2000

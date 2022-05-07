@@ -28,13 +28,13 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<Iterable<UserEntity>> findAllUsers() {
         Iterable<UserEntity> users = userService.findAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @PutMapping("/")
+    @PutMapping
     public ResponseEntity<UserEntity> updateUser(@RequestBody UserEntity user) {
         UserEntity updatedUser = userService.updateUser(user);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
