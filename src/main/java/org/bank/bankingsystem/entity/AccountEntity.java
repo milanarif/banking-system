@@ -20,7 +20,7 @@ public class AccountEntity {
     @OneToOne
     private UserEntity user;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "account")
     private List<TransferEntity> transactions = new ArrayList<>();
 
     public AccountEntity(Long funds) {

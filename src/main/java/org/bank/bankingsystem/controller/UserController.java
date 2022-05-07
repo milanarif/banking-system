@@ -22,25 +22,25 @@ public class UserController {
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UserEntity> findUserById(@PathVariable Long id) {
         UserEntity user = userService.findUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<Iterable<UserEntity>> findAllUsers() {
         Iterable<UserEntity> users = userService.findAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/")
     public ResponseEntity<UserEntity> updateUser(@RequestBody UserEntity user) {
         UserEntity updatedUser = userService.updateUser(user);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<UserEntity> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);

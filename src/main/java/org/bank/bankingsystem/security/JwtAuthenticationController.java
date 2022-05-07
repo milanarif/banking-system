@@ -2,6 +2,8 @@ package org.bank.bankingsystem.security;
 
 import java.util.Objects;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,17 +32,14 @@ public class JwtAuthenticationController {
 	private UserDetailsService jwtInMemoryUserDetailsService;
 
 	@PostMapping("/auth")
-	public ResponseEntity<?> generateAuthenticationToken(@RequestBody JwtRequest authenticationRequest)
+	@ResponseBody
+	public ResponseEntity<?> generateAuthenticationToken(@RequestBody JwtRequest authenticationRequest, HttpServletResponse response)
 			throws Exception {
-
-		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-
-		final UserDetails userDetails = jwtInMemoryUserDetailsService
-				.loadUserByUsername(authenticationRequest.getUsername());
-
-		final String token = jwtTokenUtil.generateToken(userDetails);
-
-		return ResponseEntity.ok(new JwtResponse(token));
+				authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+				final UserDetails userDetails = jwtInMemoryUserDetailsService
+					.loadUserByUsername(authenticationRequest.getUsername());
+					final String token = jwtTokenUtil.generateToken(userDetails);
+					return ResponseEntity.ok(new JwtResponse(token));
 	}
 
 	private void authenticate(String username, String password) throws Exception {
