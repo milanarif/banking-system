@@ -1,0 +1,11 @@
+steps:
+  - name: maven:4-jdk-11
+    entrypoint: mvn
+    args: ['test']
+  - name: maven:4-jdk-11
+    entrypoint: mvn
+    args: ['package','-Dmaven.test.skip=true']
+  - name: gcr.io/cloud-builders/docker
+    args: ['build', '-t', 'gcr.io/banking-system-349517/banking', '--build-arg=JAR_FILE=target/banking-system-0.0.1-SNAPSHOT.jar', '.']
+
+images: ['gcr.io/banking-system-349517/banking']
