@@ -11,10 +11,14 @@
       <h1>LOGIN</h1>
        <form v-on:submit.prevent="onSubmit">
             <p>Username <input type="text" v-model="username" /></p>
+            <p>Username <input type="text" v-model="username" /></p>
+            <p>Username <input type="text" v-model="username" /></p>
+            <p>Username <input type="text" v-model="username" /></p>
             <p>Password <input type="password" v-model="password" /></p>
             <p><button v-on:click.prevent="auth()"> Send </button><input type="reset" value="Reset" /></p>
         </form>
       </div>
+
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="http://cdn.jsdelivr.net/vue/1.0.10/vue.min.js"></script>
