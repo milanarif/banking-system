@@ -8,6 +8,6 @@ steps:
   - name: gcr.io/cloud-builders/docker
     args: ['build', '-t', 'gcr.io/banking-system-349517/banking', '--build-arg=JAR_FILE=target/banking-system-0.0.1-SNAPSHOT.jar', '.']
   - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['cp','-r','./target/site/surefire-report.html','gs://gcb-alwayspass/surefire-html-reports/$BUILD_ID/report.html']
+    args: ['cp','-r','./target/site/surefire-report.html','gs://surefire-reports/surefire-html-reports/$BUILD_ID/report.html']
 
 images: ['gcr.io/banking-system-349517/banking']
