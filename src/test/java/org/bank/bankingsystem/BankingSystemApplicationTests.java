@@ -31,9 +31,9 @@ class BankingSystemApplicationTests {
 		assertNotNull(null);
 	} */
 
-	@Test
+	/* @Test
 	void assertFalseIsFalse() {
 		assertEquals(false, false);
-	}
+	} */
 
 }
