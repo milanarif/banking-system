@@ -1,7 +1,7 @@
 steps:
   - name: maven:3.8.5-jdk-11-slim
     entrypoint: mvn
-    args: ['clean test']
+    args: ['test']
   - name: maven:3.8.5-jdk-11-slim
     entrypoint: mvn
     args: ['package','-Dmaven.test.skip=true']
