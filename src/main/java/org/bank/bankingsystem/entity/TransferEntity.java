@@ -31,8 +31,6 @@ public class TransferEntity {
     @ManyToOne
     private AccountEntity account;
 
-    @ManyToOne
-    private BankEntity bank;
 
     @PrePersist
     public void prePersist() {
@@ -40,11 +38,10 @@ public class TransferEntity {
     }
 
 
-    public TransferEntity(Long amount, AccountEntity senderAccount, AccountEntity receiverAccount, BankEntity bank) {
+    public TransferEntity(Long amount, AccountEntity senderAccount, AccountEntity receiverAccount) {
         this.amount = amount;
         this.senderAccount = senderAccount;
         this.receiverAccount = receiverAccount;
-        this.bank = bank;
     }
 
     public TransferEntity() {
@@ -91,6 +88,7 @@ public class TransferEntity {
     public void setAccount(AccountEntity account) {
         this.account = account;
     }
+
 
     public void setSenderAccount(AccountEntity senderAccount) {
         this.senderAccount = senderAccount;

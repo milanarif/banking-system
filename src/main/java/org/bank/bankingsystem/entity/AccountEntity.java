@@ -1,6 +1,7 @@
 package org.bank.bankingsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.boot.autoconfigure.amqp.AbstractRabbitListenerContainerFactoryConfigurer;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -26,6 +27,9 @@ public class AccountEntity {
     @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST)
     private List<TransferEntity> transactions = new ArrayList<>();
 
+    @OneToMany (mappedBy = "account", cascade = CascadeType.PERSIST)
+    private List<LoanEntity> loans = new ArrayList<>();
+
     public AccountEntity(Long funds) {
         this.funds = funds;
     }
@@ -36,6 +40,11 @@ public class AccountEntity {
     public void addTransaction(TransferEntity transaction) {
         transactions.add(transaction);
         transaction.setAccount(this);
+    }
+
+    public void addLoan(LoanEntity loan){
+        loans.add(loan);
+        loan.setAccount(this);
     }
 
     public Long getAccountNumber() {

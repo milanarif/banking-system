@@ -1,9 +1,9 @@
 package org.bank.bankingsystem.repository;
 
-import org.bank.bankingsystem.entity.BankEntity;
+import org.bank.bankingsystem.entity.LoanEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BankRepository extends CrudRepository<BankEntity, Long> {
+public interface LoanRepository extends CrudRepository<LoanEntity, Long> {
 }

@@ -1,11 +1,9 @@
 package org.bank.bankingsystem.service;
 
 import org.bank.bankingsystem.entity.AccountEntity;
-import org.bank.bankingsystem.entity.BankEntity;
 import org.bank.bankingsystem.entity.TransferEntity;
 import org.bank.bankingsystem.exception.CustomException;
 import org.bank.bankingsystem.repository.AccountRepository;
-import org.bank.bankingsystem.repository.BankRepository;
 import org.bank.bankingsystem.repository.TransactionRepository;
 import org.bank.bankingsystem.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -15,15 +13,13 @@ public class AccountService {
     
     private final AccountRepository accountRepository;
 
-    private final BankRepository bankRepository;
 
     private final UserRepository userRepository;
 
     private final TransactionRepository transactionRepository;
 
-    public AccountService(AccountRepository accountRepository, BankRepository bankRepository, UserRepository userRepository, TransactionRepository transactionRepository) {
+    public AccountService(AccountRepository accountRepository, UserRepository userRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
-        this.bankRepository = bankRepository;
         this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
     }
@@ -66,10 +62,8 @@ public class AccountService {
         fromAccount.setFunds(fromAccount.getFunds() - amount);
         toAccount.setFunds(toAccount.getFunds() + amount);
 
-        BankEntity bank = new BankEntity("Coolbank");
-        bankRepository.save(bank);
 
-        TransferEntity transaction = new TransferEntity(amount, fromAccount, toAccount, bank);
+        TransferEntity transaction = new TransferEntity(amount, fromAccount, toAccount);
         transactionRepository.save(transaction);
         fromAccount.addTransaction(transaction);
         toAccount.addTransaction(transaction);
