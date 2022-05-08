@@ -1,13 +1,16 @@
 steps:
+  - id: Maven Test
   - name: maven:3.8.5-jdk-11-slim
     entrypoint: mvn
     args: ['test']
+  - id: Maven Package
   - name: maven:3.8.5-jdk-11-slim
     entrypoint: mvn
     args: ['package','-Dmaven.test.skip=true']
+  - id: Build Docker Image
   - name: gcr.io/cloud-builders/docker
     args: ['build', '-t', 'gcr.io/banking-system-349517/banking', '--build-arg=JAR_FILE=target/banking-system-0.0.1-SNAPSHOT.jar', '.']
-  - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['cp','-r','./target/site/surefire-report.html','gs://surefire-reports/surefire-html-reports/$BUILD_ID/report.html']
 
-images: ['gcr.io/banking-system-349517/banking']
+images: ['europe-west3-docker.pkg.dev/banking-system-349517/banking-repo']
+
+# images: ['gcr.io/banking-system-349517/banking']
