@@ -63,7 +63,6 @@ public class AccountService {
         fromAccount.setFunds(fromAccount.getFunds() - amount);
         toAccount.setFunds(toAccount.getFunds() + amount);
 
-
         TransferEntity transaction = new TransferEntity(amount, fromAccount, toAccount);
         transactionRepository.save(transaction);
         fromAccount.addTransaction(transaction);
