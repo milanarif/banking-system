@@ -1,10 +1,12 @@
 package org.bank.bankingsystem.service;
 
 import org.bank.bankingsystem.entity.AccountEntity;
+import org.bank.bankingsystem.entity.LoanEntity;
 import org.bank.bankingsystem.entity.RoleEntity;
 import org.bank.bankingsystem.entity.UserEntity;
 import org.bank.bankingsystem.exception.CustomException;
 import org.bank.bankingsystem.repository.AccountRepository;
+import org.bank.bankingsystem.repository.LoanRepository;
 import org.bank.bankingsystem.repository.RoleRepository;
 import org.bank.bankingsystem.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,13 +21,15 @@ public class UserService {
     private final AccountRepository accountRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final LoanRepository loanRepository;
 
 
-    public UserService(UserRepository userRepository, AccountRepository accountRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, AccountRepository accountRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder, LoanRepository loanRepository) {
         this.userRepository = userRepository;
         this.accountRepository = accountRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.loanRepository = loanRepository;
     }
 
     public UserEntity findUserById(Long id) {
@@ -64,22 +68,22 @@ public class UserService {
 
         if (userEntity.getUsername() == user.getUsername())
             throw new CustomException.AlreadyExistsException("Username: " + user.getUsername() + " already Exists.");
-        
+
         return userRepository.save(userEntity);
     }
 
     public void deleteUser(Long socialSecurity) {
-UserEntity user = findUserById(socialSecurity);
-AccountEntity account = user.getAccount();
-accountRepository.delete(account);
+        UserEntity user = findUserById(socialSecurity);
+        AccountEntity account = user.getAccount();
+        accountRepository.delete(account);
         userRepository.delete(user);
     }
 
     public Iterable<UserEntity> findAllUsers() {
         Iterable<UserEntity> users = (List<UserEntity>) userRepository.findAll();
-      if(users.equals(null))
-          throw new CustomException.NotFoundException("No Users was found in database.");
-      return users;
+        if (users.equals(null))
+            throw new CustomException.NotFoundException("No Users was found in database.");
+        return users;
     }
 
 
@@ -93,5 +97,26 @@ accountRepository.delete(account);
         UserEntity userEntity = findUserById(socialSecurity);
         userEntity.removeRole(roleRepository.findByName(roleName));
         return userRepository.save(userEntity);
+    }
+
+    public UserEntity createLoan(Long userId, Long amount) {
+//TODO only role.admin can createLaon
+        UserEntity user = findUserById(userId);
+        AccountEntity account = user.getAccount();
+
+        LoanEntity newLoan = new LoanEntity(amount, 10.0);
+        loanRepository.save(newLoan);
+
+        account.addLoan(newLoan);
+        account.setFunds(account.getFunds() + amount);
+        accountRepository.save(account);
+        return user;
+    }
+
+    public Iterable<LoanEntity> findAllLoans() {
+        Iterable<LoanEntity> loans = loanRepository.findAll();
+        if (loans.equals(null))
+            throw new CustomException.NotFoundException("No loans were found.");
+        return loans;
     }
 }

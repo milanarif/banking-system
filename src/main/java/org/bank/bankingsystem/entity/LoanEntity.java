@@ -1,5 +1,7 @@
 package org.bank.bankingsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,17 +14,18 @@ public class LoanEntity {
 
     Long loan;
 
-    String name;
-
-    float interest;
+    Double interest;
 
     @ManyToOne
     private AccountEntity account;
 
+    @JsonIgnore
+    public AccountEntity getAccount() {
+        return account;
+    }
 
-    public LoanEntity(Long loan, String name, float interest) {
+    public LoanEntity(Long loan, Double interest) {
         this.loan = loan;
-        this.name = name;
         this.interest = interest;
     }
 
@@ -49,19 +52,11 @@ public class LoanEntity {
         this.loan = loan;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public float getInterest() {
+    public Double getInterest() {
         return interest;
     }
 
-    public void setInterest(float interest) {
+    public void setInterest(Double interest) {
         this.interest = interest;
     }
 }

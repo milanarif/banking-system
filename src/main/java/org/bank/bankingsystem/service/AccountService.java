@@ -5,22 +5,16 @@ import org.bank.bankingsystem.entity.TransferEntity;
 import org.bank.bankingsystem.exception.CustomException;
 import org.bank.bankingsystem.repository.AccountRepository;
 import org.bank.bankingsystem.repository.TransactionRepository;
-import org.bank.bankingsystem.repository.UserRepository;
+
 import org.springframework.stereotype.Service;
 
 @Service
 public class AccountService {
     
     private final AccountRepository accountRepository;
-
-
-    private final UserRepository userRepository;
-
     private final TransactionRepository transactionRepository;
-
-    public AccountService(AccountRepository accountRepository, UserRepository userRepository, TransactionRepository transactionRepository) {
+    public AccountService(AccountRepository accountRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
-        this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
     }
 

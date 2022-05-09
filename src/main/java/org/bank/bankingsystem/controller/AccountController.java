@@ -1,6 +1,7 @@
 package org.bank.bankingsystem.controller;
 
 import org.bank.bankingsystem.entity.AccountEntity;
+import org.bank.bankingsystem.entity.LoanEntity;
 import org.bank.bankingsystem.entity.TransferEntity;
 import org.bank.bankingsystem.service.AccountService;
 import org.springframework.http.HttpStatus;
@@ -57,5 +58,4 @@ public class AccountController {
         TransferEntity transfer = accountService.transfer(senderId, reciverId, amount);
         return new ResponseEntity<TransferEntity>((MultiValueMap<String, String>) transfer, HttpStatus.OK);
     }
-
 }
