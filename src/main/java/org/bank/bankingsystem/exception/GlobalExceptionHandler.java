@@ -41,7 +41,13 @@ public class GlobalExceptionHandler  extends ResponseEntityExceptionHandler {
         return buildResponseEntity(new ApiError(HttpStatus.INSUFFICIENT_STORAGE, errorMessage, exception));
     }
 
+    @ExceptionHandler({CustomException.UnauthorizedTransfer.class})
+    public ResponseEntity<Object> unauthorizedTransfer(CustomException exception){
+        logger.info(exception.getClass().getName());
+        String errorMessage = "Custom exception happened";
 
+        return buildResponseEntity(new ApiError(HttpStatus.UNAUTHORIZED, errorMessage, exception));
+    }
 
 
 

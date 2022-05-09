@@ -69,6 +69,7 @@ public class AccountService {
         toAccount.addTransaction(transaction);
         accountRepository.save(fromAccount);
         accountRepository.save(toAccount);
+        System.out.println("Processed transaction " + transaction.getTransferId());
         return transaction;
     }
 
