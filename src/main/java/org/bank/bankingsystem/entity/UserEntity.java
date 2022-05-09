@@ -17,9 +17,6 @@ public class UserEntity {
 
     private String password;
 
-    @ManyToOne
-    private BankEntity bank;
-
     @OneToOne(mappedBy = "user")
     private AccountEntity account;
 
@@ -37,9 +34,6 @@ public class UserEntity {
         this.username = username;
     }
 
-    public BankEntity getBank() {
-        return bank;
-    }
     public String getPassword() {
         return password;
     }
@@ -66,9 +60,6 @@ public class UserEntity {
     }
     public void setName(String name) {
         this.name = name;
-    }
-    public void setBank(BankEntity bank) {
-        this.bank = bank;
     }
     public void addRole(RoleEntity role) {
         roles.add(role);
