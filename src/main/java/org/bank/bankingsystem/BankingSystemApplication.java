@@ -23,8 +23,13 @@ public class BankingSystemApplication {
 	@Bean
     public CommandLineRunner setUpRoles(RoleRepository roleRepository) {
         return (args) -> {
-            roleRepository.save(new RoleEntity("ROLE_ADMIN"));
-            roleRepository.save(new RoleEntity("ROLE_USER"));
+
+            RoleEntity findRoles = roleRepository.findByName("ROLE_ADMIN");
+
+            if (findRoles == null) {
+                roleRepository.save(new RoleEntity("ROLE_ADMIN"));
+                roleRepository.save(new RoleEntity("ROLE_USER"));
+            }
         };
     }
 
