@@ -7,7 +7,6 @@ import org.bank.bankingsystem.exception.CustomException;
 import org.bank.bankingsystem.repository.AccountRepository;
 import org.bank.bankingsystem.repository.BankRepository;
 import org.bank.bankingsystem.repository.TransactionRepository;
-import org.bank.bankingsystem.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,14 +16,11 @@ public class AccountService {
 
     private final BankRepository bankRepository;
 
-    private final UserRepository userRepository;
-
     private final TransactionRepository transactionRepository;
 
-    public AccountService(AccountRepository accountRepository, BankRepository bankRepository, UserRepository userRepository, TransactionRepository transactionRepository) {
+    public AccountService(AccountRepository accountRepository, BankRepository bankRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
         this.bankRepository = bankRepository;
-        this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
     }
 
