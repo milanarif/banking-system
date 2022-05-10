@@ -77,7 +77,10 @@ public class AccountService {
         return transactions;
     }
     public Iterable<AccountEntity> findAllAccounts() {
-        return accountRepository.findAll();
+    Iterable<AccountEntity> accounts = accountRepository.findAll();
+    if(accounts.equals(null))
+        throw  new CustomException.NotFoundException("No accounts were found in database.");
+    return accounts;
     }
     public Long getBalance(Long accountId) {
         return findAccountById(accountId).getFunds();
