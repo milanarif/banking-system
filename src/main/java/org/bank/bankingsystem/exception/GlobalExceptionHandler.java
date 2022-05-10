@@ -44,12 +44,16 @@ public class GlobalExceptionHandler  extends ResponseEntityExceptionHandler {
     @ExceptionHandler({CustomException.UnauthorizedTransfer.class})
     public ResponseEntity<Object> unauthorizedTransfer(CustomException exception){
         logger.info(exception.getClass().getName());
-        String errorMessage = "Custom exception happened";
+        String errorMessage = "NO AUTHORIZATION";
 
         return buildResponseEntity(new ApiError(HttpStatus.UNAUTHORIZED, errorMessage, exception));
     }
 
+    @ExceptionHandler({CustomException.InvalidUserDetails.class})
+    public ResponseEntity<Object> invalidUserDetails(CustomException exception){
+        logger.info(exception.getClass().getName());
+        String errorMessage = "Could not create user, invalid details";
 
-
-
+        return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, errorMessage, exception));
+    }
 }
