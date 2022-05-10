@@ -4,6 +4,7 @@ import org.bank.bankingsystem.entity.AccountEntity;
 import org.bank.bankingsystem.entity.RoleEntity;
 import org.bank.bankingsystem.entity.UserEntity;
 import org.bank.bankingsystem.exception.CustomException;
+import org.bank.bankingsystem.repository.AccountRepository;
 import org.bank.bankingsystem.repository.RoleRepository;
 import org.bank.bankingsystem.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,12 +17,14 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final AccountRepository accountRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final AccountService accountService;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder, AccountService accountService) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, AccountRepository accountRepository, BCryptPasswordEncoder passwordEncoder, AccountService accountService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
         this.accountService = accountService;
     }
@@ -80,6 +83,8 @@ public class UserService {
 
     public void deleteUser(Long socialSecurity) {
         UserEntity user = findUserById(socialSecurity);
+        AccountEntity account = user.getAccount();
+        accountRepository.delete(account);
         userRepository.delete(user);
     }
 
