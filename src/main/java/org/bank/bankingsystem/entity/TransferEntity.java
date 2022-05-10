@@ -22,24 +22,21 @@ public class TransferEntity {
 
     private LocalDate date;
 
-    @OneToOne
-    AccountEntity senderAccount;
+    Long senderAccountId;
 
-    @OneToOne
-    AccountEntity receiverAccount;
+    Long receiverAccountId;
 
-    @ManyToOne
-    private AccountEntity account;
 
     @PrePersist
     public void prePersist() {
         this.date = LocalDate.now();
     }
 
-    public TransferEntity(Long amount, AccountEntity senderAccount, AccountEntity receiverAccount) {
+
+    public TransferEntity(Long amount, Long senderAccountId, Long receiverAccountId) {
         this.amount = amount;
-        this.senderAccount = senderAccount;
-        this.receiverAccount = receiverAccount;
+        this.senderAccountId = senderAccountId;
+        this.receiverAccountId = receiverAccountId;
     }
 
     public TransferEntity() {
@@ -53,14 +50,20 @@ public class TransferEntity {
         this.amount = amount;
     }
 
-    @JsonIgnore
-    public AccountEntity getSenderAccount() {
-        return senderAccount;
+    public Long getSenderAccountId() {
+        return senderAccountId;
     }
 
-    @JsonIgnore
-    public AccountEntity getReceiverAccount() {
-        return receiverAccount;
+    public void setSenderAccountId(Long senderAccountId) {
+        this.senderAccountId = senderAccountId;
+    }
+
+    public Long getReceiverAccountId() {
+        return receiverAccountId;
+    }
+
+    public void setReceiverAccountId(Long receiverAccountId) {
+        this.receiverAccountId = receiverAccountId;
     }
 
     public Long getTransferId() {
@@ -83,15 +86,5 @@ public class TransferEntity {
         return date;
     }
 
-    public void setAccount(AccountEntity account) {
-        this.account = account;
-    }
-
-    public void setSenderAccount(AccountEntity senderAccount) {
-        this.senderAccount = senderAccount;
-    }
-
-    public void setReceiverAccount(AccountEntity receiverAccount) {
-        this.receiverAccount = receiverAccount;
-    }
 }
+

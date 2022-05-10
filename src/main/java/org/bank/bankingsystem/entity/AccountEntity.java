@@ -25,9 +25,6 @@ public class AccountEntity {
     private UserEntity user;
 
     @OneToMany(mappedBy = "account")
-    private List<TransferEntity> transactions = new ArrayList<>();
-
-    @OneToMany (mappedBy = "account", cascade = CascadeType.PERSIST)
     private List<LoanEntity> loans = new ArrayList<>();
 
     public AccountEntity(Long funds) {
@@ -37,12 +34,7 @@ public class AccountEntity {
     public AccountEntity() {
     }
 
-    public void addTransaction(TransferEntity transaction) {
-        transactions.add(transaction);
-        transaction.setAccount(this);
-    }
-
-    public void addLoan(LoanEntity loan){
+    public void addLoan(LoanEntity loan) {
         loans.add(loan);
         loan.setAccount(this);
     }
@@ -78,14 +70,6 @@ public class AccountEntity {
 
     public void setUser(UserEntity user) {
         this.user = user;
-    }
-
-    public List<TransferEntity> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(List<TransferEntity> transactions) {
-        this.transactions = transactions;
     }
 }
 
