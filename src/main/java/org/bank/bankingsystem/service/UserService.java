@@ -1,10 +1,12 @@
 package org.bank.bankingsystem.service;
 
 import org.bank.bankingsystem.entity.AccountEntity;
+import org.bank.bankingsystem.entity.LoanEntity;
 import org.bank.bankingsystem.entity.RoleEntity;
 import org.bank.bankingsystem.entity.UserEntity;
 import org.bank.bankingsystem.exception.CustomException;
 import org.bank.bankingsystem.repository.AccountRepository;
+import org.bank.bankingsystem.repository.LoanRepository;
 import org.bank.bankingsystem.repository.RoleRepository;
 import org.bank.bankingsystem.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,13 +20,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final AccountRepository accountRepository;
+    private final LoanRepository loanRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final AccountService accountService;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, AccountRepository accountRepository, BCryptPasswordEncoder passwordEncoder, AccountService accountService) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, AccountRepository accountRepository,  LoanRepository loanRepository, BCryptPasswordEncoder passwordEncoder, AccountService accountService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.accountRepository = accountRepository;
+        this.loanRepository = loanRepository;
         this.passwordEncoder = passwordEncoder;
         this.accountService = accountService;
     }
@@ -93,6 +97,27 @@ public class UserService {
       if(users.equals(null))
           throw new CustomException.NotFoundException("No Users was found in database.");
       return users;
+    }
+
+    public UserEntity createLoan(Long userId, Long amount) {
+        //TODO only role.admin can createLoan
+        UserEntity user = findUserById(userId);
+        AccountEntity account = user.getAccount();
+
+        LoanEntity newLoan = new LoanEntity(amount, 10.0);
+        loanRepository.save(newLoan);
+
+        account.addLoan(newLoan);
+        account.setFunds(account.getFunds() + amount);
+        accountRepository.save(account);
+        return user;
+    }
+
+    public Iterable<LoanEntity> findAllLoans() {
+        Iterable<LoanEntity> loans = loanRepository.findAll();
+        if (loans.equals(null))
+            throw new CustomException.NotFoundException("No loans were found.");
+        return loans;
     }
 
     public UserEntity addRole(Long id, String roleName) {

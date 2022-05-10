@@ -47,6 +47,14 @@ public class AccountEntity {
         loan.setAccount(this);
     }
 
+    public List<LoanEntity> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(List<LoanEntity> loans) {
+        this.loans = loans;
+    }
+
     public Long getAccountNumber() {
         return accountNumber;
     }
