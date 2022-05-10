@@ -81,8 +81,8 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
-    public void deleteUser(Long socialSecurity) {
-        UserEntity user = findUserById(socialSecurity);
+    public void deleteUser(Long id) {
+        UserEntity user = findUserById(id);
         AccountEntity account = user.getAccount();
         accountRepository.delete(account);
         userRepository.delete(user);
@@ -95,15 +95,14 @@ public class UserService {
       return users;
     }
 
-
-    public UserEntity addRole(Long socialSecurity, String roleName) {
-        UserEntity userEntity = findUserById(socialSecurity);
+    public UserEntity addRole(Long id, String roleName) {
+        UserEntity userEntity = findUserById(id);
         userEntity.addRole(roleRepository.findByName(roleName));
         return userRepository.save(userEntity);
     }
 
-    public UserEntity removeRole(Long socialSecurity, String roleName) {
-        UserEntity userEntity = findUserById(socialSecurity);
+    public UserEntity removeRole(Long id, String roleName) {
+        UserEntity userEntity = findUserById(id);
         userEntity.removeRole(roleRepository.findByName(roleName));
         return userRepository.save(userEntity);
     }
