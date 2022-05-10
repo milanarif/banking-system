@@ -31,6 +31,15 @@ public class UserService {
     }
 
     public UserEntity createUser(UserEntity user) {
+
+        if(user.getUsername().length() < 3) {
+            throw new CustomException.InvalidUserDetails("Username has to be atleast 3 characters");
+        } else if (user.getName().length() < 3) {
+            throw new CustomException.InvalidUserDetails("Name has to be atleast 3 characters");
+        } else if (user.getPassword().length() < 3) {
+            throw new CustomException.InvalidUserDetails("Password has to be atleast 3 characters");
+        }
+
         UserEntity initializedUser = initializeUser(user);
         AccountEntity newAccount = createAccount(user);
         initializedUser.setAccount(newAccount);
