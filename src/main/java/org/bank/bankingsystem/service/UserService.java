@@ -73,15 +73,27 @@ public class UserService {
         return newAccount;
     }
 
-    public UserEntity updateUser(UserEntity user) {
-        UserEntity userEntity = findUserById(user.getId());
+    public UserEntity updateUser(Long id, UserEntity user) {
+
+        if (user.getName() == null) {
+            throw new CustomException.InvalidUserDetails("Name is null");
+        } else if (user.getUsername() == null) {
+            throw new CustomException.InvalidUserDetails("Username is null");
+        } else if (user.getPassword() == null) {
+            throw new CustomException.InvalidUserDetails("Password is null");
+        }
+
+        List<UserEntity> users = (List<UserEntity>) userRepository.findAll();
+        for (UserEntity u : users) {
+            if (u.getUsername().contentEquals(user.getUsername())) {
+                throw new CustomException.AlreadyExistsException("Username: " + user.getUsername() + " already Exists.");
+            }
+        }
+        UserEntity userEntity = findUserById(id);
         userEntity.setName(user.getName());
         userEntity.setUsername(user.getUsername());
         userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        if (userEntity.getUsername() == user.getUsername())
-            throw new CustomException.AlreadyExistsException("Username: " + user.getUsername() + " already Exists.");
-        
         return userRepository.save(userEntity);
     }
 
@@ -94,9 +106,9 @@ public class UserService {
 
     public Iterable<UserEntity> findAllUsers() {
         Iterable<UserEntity> users = (List<UserEntity>) userRepository.findAll();
-      if(users.equals(null))
-          throw new CustomException.NotFoundException("No Users was found in database.");
-      return users;
+        if(users.equals(null))
+            throw new CustomException.NotFoundException("No Users was found in database.");
+        return users;
     }
 
     public UserEntity createLoan(Long userId, Long amount) {
