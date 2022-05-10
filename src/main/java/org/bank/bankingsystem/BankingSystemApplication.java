@@ -23,7 +23,6 @@ public class BankingSystemApplication {
 	@Bean
     public CommandLineRunner setUpRoles(RoleRepository roleRepository) {
         return (args) -> {
-
             RoleEntity findRoles = roleRepository.findByName("ROLE_ADMIN");
 
             if (findRoles == null) {

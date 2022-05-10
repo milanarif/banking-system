@@ -1,5 +1,7 @@
 FROM openjdk:11-jre-slim-buster
 
-COPY target/banking-system-0.0.1-SNAPSHOT.jar /usr/share/banking-system-0.0.1-SNAPSHOT.jar
+COPY ./target/banking-system-1.jar /usr/src/banking-system/
 
-ENTRYPOINT ["java","-jar","/banking-system-0.0.1-SNAPSHOT.jar"]
+WORKDIR /usr/src/banking-system
+
+ENTRYPOINT ["java","-jar","banking-system-1.jar"]

@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.bank</groupId>
 	<artifactId>banking-system</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1</version>
 	<name>banking-system</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -18,6 +18,10 @@
 	</properties>
 
 	<dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-activemq</artifactId>
+        </dependency>
 		<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>

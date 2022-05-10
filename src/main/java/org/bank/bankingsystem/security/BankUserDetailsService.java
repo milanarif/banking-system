@@ -19,11 +19,9 @@ public class BankUserDetailsService implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity userEntity = userRepository.findByUsername(username);
-
         if (userEntity == null) {
             throw new UsernameNotFoundException("Can't find user with username: " + username);
         }
-
         return new BankUserPrincipal(userEntity);
     }
 

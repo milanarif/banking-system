@@ -15,7 +15,7 @@ public class AccountService {
 
     public AccountService(AccountRepository accountRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
-        this.transactionRepository = transactionRepository;
+
     }
 
     public AccountEntity findAccountById(Long accountId) {
