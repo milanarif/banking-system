@@ -59,6 +59,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		} else {
 			logger.warn("JWT Token does not begin with Bearer String");
 		}
+		// check if token belongs to user's account
 		if (request.getRequestURI().startsWith("/accounts/transaction/")) {
 			checkTransactionAccountOwner(jwtToken, request);
 		}
@@ -82,9 +83,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	}
 
 	protected void checkTransactionAccountOwner(String jwtToken, HttpServletRequest request) {
-		String str = request.getRequestURI();
-		String senderAccountStr = str.split("/")[3];
-		Long senderAccount = Long.valueOf(senderAccountStr).longValue();
+		String requestURI = request.getRequestURI();
+		String senderAccountStr = requestURI.split("/")[3];
+		Long senderAccount = Long.valueOf(senderAccountStr);
 
 		String tokenUsername = jwtTokenUtil.getUsernameFromToken(jwtToken);
 		UserEntity findUserByUsername = userRepository.findByUsername(tokenUsername);
