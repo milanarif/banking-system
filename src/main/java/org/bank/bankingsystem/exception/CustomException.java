@@ -20,4 +20,14 @@ public class CustomException extends RuntimeException {
     public static class InsufficientStorage extends CustomException{
         public InsufficientStorage(String message) { super(message); }
     }
+
+    public static class UnauthorizedTransfer extends CustomException{
+        public UnauthorizedTransfer(String message) { super(message);}
+    }
+
+    public static class InvalidUserDetails extends CustomException{
+        public InvalidUserDetails(String message){
+            super(message);
+        }
+    }
 }

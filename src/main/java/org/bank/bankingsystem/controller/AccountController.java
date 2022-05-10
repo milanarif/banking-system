@@ -50,12 +50,12 @@ public class AccountController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/transaction/{senderId}/{reciverId}")
+    @PutMapping("/transaction/{senderId}/{receiverId}")
     public ResponseEntity<TransferEntity> transaction(@PathVariable Long senderId,
-                                                           @PathVariable Long reciverId,
+                                                           @PathVariable Long receiverId,
                                                            @QueryParam("amount") Long amount) {
-        TransferEntity transfer = accountService.transfer(senderId, reciverId, amount);
-        return new ResponseEntity<TransferEntity>((MultiValueMap<String, String>) transfer, HttpStatus.OK);
+        TransferEntity transfer = accountService.transfer(senderId, receiverId, amount);
+        return new ResponseEntity<>(transfer, HttpStatus.OK);
     }
 
 }

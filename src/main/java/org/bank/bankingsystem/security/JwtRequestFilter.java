@@ -6,6 +6,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.bank.bankingsystem.entity.AccountEntity;
+import org.bank.bankingsystem.entity.UserEntity;
+import org.bank.bankingsystem.exception.CustomException;
+import org.bank.bankingsystem.repository.UserRepository;
+import org.bank.bankingsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +29,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
+
+	@Autowired
+	UserService userService;
+
+	@Autowired
+	UserRepository userRepository;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -46,7 +57,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		} else {
 			logger.warn("JWT Token does not begin with Bearer String");
 		}
-
+		// check if token belongs to user's account
+		if (request.getRequestURI().startsWith("/accounts/transaction/")) {
+			checkTransactionAccountOwner(jwtToken, request);
+		}
 		//Once we get the token validate it.
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
@@ -54,7 +68,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 			// if token is valid configure Spring Security to manually set authentication
 			if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
-
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
 				usernamePasswordAuthenticationToken
@@ -65,6 +78,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			}
 		}
 		chain.doFilter(request, response);
+	}
+
+	protected void checkTransactionAccountOwner(String jwtToken, HttpServletRequest request) {
+		String requestURI = request.getRequestURI();
+		String senderAccountStr = requestURI.split("/")[3];
+		Long senderAccount = Long.valueOf(senderAccountStr);
+
+		String tokenUsername = jwtTokenUtil.getUsernameFromToken(jwtToken);
+		UserEntity findUserByUsername = userRepository.findByUsername(tokenUsername);
+		AccountEntity userAccount = findUserByUsername.getAccount();
+
+		if (userAccount.getAccountNumber() != senderAccount) {
+			throw new CustomException.UnauthorizedTransfer("You have no authorization for this account");
+		}
 	}
 
 }

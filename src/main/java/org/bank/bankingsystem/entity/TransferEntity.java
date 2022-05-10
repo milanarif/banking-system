@@ -31,20 +31,15 @@ public class TransferEntity {
     @ManyToOne
     private AccountEntity account;
 
-    @ManyToOne
-    private BankEntity bank;
-
     @PrePersist
     public void prePersist() {
         this.date = LocalDate.now();
     }
 
-
-    public TransferEntity(Long amount, AccountEntity senderAccount, AccountEntity receiverAccount, BankEntity bank) {
+    public TransferEntity(Long amount, AccountEntity senderAccount, AccountEntity receiverAccount) {
         this.amount = amount;
         this.senderAccount = senderAccount;
         this.receiverAccount = receiverAccount;
-        this.bank = bank;
     }
 
     public TransferEntity() {

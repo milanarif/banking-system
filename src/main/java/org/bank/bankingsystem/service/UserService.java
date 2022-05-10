@@ -4,7 +4,6 @@ import org.bank.bankingsystem.entity.AccountEntity;
 import org.bank.bankingsystem.entity.RoleEntity;
 import org.bank.bankingsystem.entity.UserEntity;
 import org.bank.bankingsystem.exception.CustomException;
-import org.bank.bankingsystem.repository.AccountRepository;
 import org.bank.bankingsystem.repository.RoleRepository;
 import org.bank.bankingsystem.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,28 +15,39 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final AccountRepository accountRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final AccountService accountService;
 
-
-    public UserService(UserRepository userRepository, AccountRepository accountRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder, AccountService accountService) {
         this.userRepository = userRepository;
-        this.accountRepository = accountRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.accountService = accountService;
     }
 
     public UserEntity findUserById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new CustomException.NotFoundException("User with id: " + id + " could not be found in database."));
     }
 
-    public void createAccount(UserEntity user, AccountEntity account) {
-        account.setUser(user);
-        accountRepository.save(account);
+    public UserEntity createUser(UserEntity user) {
+
+        if(user.getUsername().length() < 3) {
+            throw new CustomException.InvalidUserDetails("Username has to be atleast 3 characters");
+        } else if (user.getName().length() < 3) {
+            throw new CustomException.InvalidUserDetails("Name has to be atleast 3 characters");
+        } else if (user.getPassword().length() < 3) {
+            throw new CustomException.InvalidUserDetails("Password has to be atleast 3 characters");
+        }
+
+        UserEntity initializedUser = initializeUser(user);
+        AccountEntity newAccount = createAccount(user);
+        initializedUser.setAccount(newAccount);
+
+        return user;
     }
 
-    public UserEntity createUser(UserEntity user) {
+    public UserEntity initializeUser(UserEntity user) {
         List<UserEntity> users = (List<UserEntity>) userRepository.findAll();
         for (UserEntity u : users) {
             if (u.getUsername().contentEquals(user.getUsername())) {
@@ -47,7 +57,13 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         RoleEntity roleToAdd = roleRepository.findByName("ROLE_USER");
         user.addRole(roleToAdd);
+
         return userRepository.save(user);
+    }
+
+    public AccountEntity createAccount(UserEntity user) {
+        AccountEntity newAccount = accountService.createAccount(user);
+        return newAccount;
     }
 
     public UserEntity updateUser(UserEntity user) {
@@ -63,7 +79,7 @@ public class UserService {
     }
 
     public void deleteUser(Long socialSecurity) {
-UserEntity user = findUserById(socialSecurity);
+        UserEntity user = findUserById(socialSecurity);
         userRepository.delete(user);
     }
 
