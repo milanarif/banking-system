@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 public class AccountService {
     
     private final AccountRepository accountRepository;
-
     private final TransactionRepository transactionRepository;
 
     public AccountService(AccountRepository accountRepository, TransactionRepository transactionRepository) {
@@ -59,13 +58,25 @@ public class AccountService {
         fromAccount.setFunds(fromAccount.getFunds() - amount);
         toAccount.setFunds(toAccount.getFunds() + amount);
 
-        TransferEntity transaction = new TransferEntity(amount, fromAccount, toAccount);
+        TransferEntity transaction = new TransferEntity(amount, fromAccount.getAccountNumber(), toAccount.getAccountNumber());
         transactionRepository.save(transaction);
-        fromAccount.addTransaction(transaction);
-        toAccount.addTransaction(transaction);
         accountRepository.save(fromAccount);
         accountRepository.save(toAccount);
         System.out.println("Processed transaction " + transaction.getTransferId());
         return transaction;
+    }
+
+    public Iterable<TransferEntity> getAllTransactions(){
+        Iterable<TransferEntity> transactions = transactionRepository.findAll();
+        if(transactions.equals(null))
+            throw new CustomException.NotFoundException("No transactions were found in database.");
+
+        return transactions;
+    }
+    public Iterable<AccountEntity> findAllAccounts() {
+        Iterable<AccountEntity> accounts = accountRepository.findAll();
+        if(accounts.equals(null))
+            throw  new CustomException.NotFoundException("No accounts were found in database.");
+        return accounts;
     }
 }
