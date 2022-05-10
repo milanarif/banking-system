@@ -8,6 +8,8 @@ import org.bank.bankingsystem.repository.TransactionRepository;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AccountService {
     
@@ -57,19 +59,26 @@ public class AccountService {
         toAccount.setFunds(toAccount.getFunds() + amount);
 
 
-        TransferEntity transaction = new TransferEntity(amount, fromAccount, toAccount);
+        TransferEntity transaction = new TransferEntity(amount, fromAccount.getAccountNumber(), toAccount.getAccountNumber());
         transactionRepository.save(transaction);
-        fromAccount.addTransaction(transaction);
-        toAccount.addTransaction(transaction);
         accountRepository.save(fromAccount);
         accountRepository.save(toAccount);
         return transaction;
     }
 
+    public TransferEntity getTransactionsById(Long id) {
+        return transactionRepository.findById(id).orElseThrow(() -> new CustomException.NotFoundException("Transaction with id: " + id + " could not be found in database."));
+    }
+    public Iterable<TransferEntity> getAllTransactions(){
+       Iterable<TransferEntity> transactions = transactionRepository.findAll();
+       if(transactions.equals(null))
+           throw new CustomException.NotFoundException("No transactions were found in database.");
+
+        return transactions;
+    }
     public Iterable<AccountEntity> findAllAccounts() {
         return accountRepository.findAll();
     }
-
     public Long getBalance(Long accountId) {
         return findAccountById(accountId).getFunds();
     }

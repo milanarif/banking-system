@@ -75,6 +75,12 @@ public class UserService {
     public void deleteUser(Long socialSecurity) {
         UserEntity user = findUserById(socialSecurity);
         AccountEntity account = user.getAccount();
+       List<LoanEntity> loans = account.getLoans();
+       if(!loans.isEmpty()) {
+           for (LoanEntity l : loans) {
+               loanRepository.deleteById(l.getLoanId());
+           }
+       }
         accountRepository.delete(account);
         userRepository.delete(user);
     }

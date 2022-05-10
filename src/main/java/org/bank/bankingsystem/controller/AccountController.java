@@ -1,7 +1,6 @@
 package org.bank.bankingsystem.controller;
 
 import org.bank.bankingsystem.entity.AccountEntity;
-import org.bank.bankingsystem.entity.LoanEntity;
 import org.bank.bankingsystem.entity.TransferEntity;
 import org.bank.bankingsystem.service.AccountService;
 import org.springframework.http.HttpStatus;
@@ -53,9 +52,21 @@ public class AccountController {
 
     @PutMapping("/transaction/{senderId}/{reciverId}")
     public ResponseEntity<TransferEntity> transaction(@PathVariable Long senderId,
-                                                           @PathVariable Long reciverId,
-                                                           @QueryParam("amount") Long amount) {
+                                                      @PathVariable Long reciverId,
+                                                      @QueryParam("amount") Long amount) {
         TransferEntity transfer = accountService.transfer(senderId, reciverId, amount);
-        return new ResponseEntity<TransferEntity>((MultiValueMap<String, String>) transfer, HttpStatus.OK);
+        return new ResponseEntity  (transfer, HttpStatus.OK);
+    }
+
+    @GetMapping("/findAllTransactions")
+    public ResponseEntity<TransferEntity> findAllTransactions() {
+        Iterable<TransferEntity> transactions = accountService.getAllTransactions();
+        return new ResponseEntity(transactions, HttpStatus.OK);
+    }
+
+    @GetMapping("/findTransaction/{id}")
+    public ResponseEntity findTransaction(@PathVariable Long id) {
+        TransferEntity transaction = accountService.getTransactionsById(id);
+        return new ResponseEntity(transaction, HttpStatus.OK);
     }
 }

@@ -53,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.csrf().disable()
 				.authorizeRequests()
 				.antMatchers("/", "/auth", "/users/signup").permitAll()
+			//	.antMatchers("/users/createLoan/{userId}","/accounts/findAllTransactions", "/users/findAllLoans").hasRole("ROLE_ADMIN")
 				.anyRequest()
 				.authenticated()
 				.and()
