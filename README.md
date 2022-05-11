@@ -26,7 +26,7 @@ requires JSON body
 
 // Following requests require TOKEN in header
 GET 'http://localhost:8080/users'
-Returns all users
+requires 'ROLE.ADMIN' - Returns all users
 
 GET 'http://localhost:8080/users/{userId}'
 Returns user
@@ -68,7 +68,6 @@ requires accountId & amount(queryParam)
 Transfer money between accounts
 PUT 'http://localhost:8080/accounts/transaction/{senderAccountId}/{receiverAccountId}/?amount=500'
 requires Sender accountId, Receiver accountId & amount(queryParam)
-'ROLE.USER' will get denied if senderAccountId and token does not match.
 
 GET 'http://localhost:8080/accounts/transactions'
 requires 'ROLE.ADMIN' - Returns all transactions
