@@ -76,7 +76,8 @@ requires 'ROLE.ADMIN' - Returns all transactions
 
 ### Statlogger
 ```java
-GET 'http://localhost:8081/logs/all'
+GET 'http://localhost:8081/logs'
 
 Returns logs of user authentiaction history
+Requires ADMIN credentials in Basic auth
 ```
