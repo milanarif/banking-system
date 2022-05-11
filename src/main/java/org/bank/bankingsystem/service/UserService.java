@@ -99,15 +99,21 @@ public class UserService {
 
     public void deleteUser(Long id) {
         UserEntity user = findUserById(id);
-        AccountEntity account = user.getAccount();
-        List<LoanEntity> loans = account.getLoans();
-        if(!loans.isEmpty()) {
-            for (LoanEntity loan : loans) {
-                loanRepository.deleteById(loan.getLoanId());
+        if (!user.getUsername().equals("admin")) {
+            AccountEntity account = user.getAccount();
+            List<LoanEntity> loans = account.getLoans();
+            if(!loans.isEmpty()) {
+                for (LoanEntity loan : loans) {
+                    loanRepository.deleteById(loan.getLoanId());
+                }
             }
+            accountRepository.delete(account);
+            userRepository.delete(user);
+        } 
+        else {
+            throw new CustomException.RemoveAdminException("Admin user cannot be deleted.");
         }
-        accountRepository.delete(account);
-        userRepository.delete(user);
+
     }
 
     public Iterable<UserEntity> findAllUsers() {

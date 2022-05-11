@@ -15,7 +15,7 @@ public class RoleEntity {
 
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<UserEntity> users;
 
     public RoleEntity() {

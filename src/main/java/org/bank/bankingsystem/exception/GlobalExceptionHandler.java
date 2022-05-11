@@ -20,7 +20,7 @@ public class GlobalExceptionHandler  extends ResponseEntityExceptionHandler {
     @ExceptionHandler({CustomException.NotFoundException.class})
     public ResponseEntity<Object> notFoundException(CustomException exception){
         logger.info(exception.getClass().getName());
-        String errorMessage = "Custom exception happened";
+        String errorMessage = "Resource not found";
 
         return buildResponseEntity(new ApiError(HttpStatus.NOT_FOUND, errorMessage, exception));
     }
@@ -28,25 +28,31 @@ public class GlobalExceptionHandler  extends ResponseEntityExceptionHandler {
     @ExceptionHandler({CustomException.AlreadyExistsException.class})
     public ResponseEntity<Object> alreadyExistsException(CustomException exception){
         logger.info(exception.getClass().getName());
-        String errorMessage = "Custom exception happened";
+        String errorMessage = "Already Exists";
 
         return buildResponseEntity(new ApiError(HttpStatus.IM_USED, errorMessage, exception));
     }
 
-    @ExceptionHandler({CustomException.InsufficientStorage.class})
-    public ResponseEntity<Object> insufficientStorage(CustomException exception){
+    @ExceptionHandler({CustomException.InsufficientFundsException.class})
+    public ResponseEntity<Object> In(CustomException exception){
         logger.info(exception.getClass().getName());
-        String errorMessage = "Custom exception happened";
+        String errorMessage = "Insufficient funds";
 
-        return buildResponseEntity(new ApiError(HttpStatus.INSUFFICIENT_STORAGE, errorMessage, exception));
+        return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, errorMessage, exception));
     }
 
     @ExceptionHandler({CustomException.UnauthorizedTransfer.class})
     public ResponseEntity<Object> unauthorizedTransfer(CustomException exception){
         logger.info(exception.getClass().getName());
         String errorMessage = "NO AUTHORIZATION";
-
         return buildResponseEntity(new ApiError(HttpStatus.UNAUTHORIZED, errorMessage, exception));
+    }
+    
+    @ExceptionHandler({CustomException.RemoveAdminException.class})
+    public ResponseEntity<Object> removeAdminException(CustomException exception){
+        logger.info(exception.getClass().getName());
+        String errorMessage = "Not allowed to remove admin";
+        return buildResponseEntity(new ApiError(HttpStatus.FORBIDDEN, errorMessage, exception));
     }
 
     @ExceptionHandler({CustomException.InvalidUserDetails.class})
