@@ -6,6 +6,8 @@ import org.bank.bankingsystem.repository.AccountRepository;
 import org.bank.bankingsystem.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class AccountService {
     
@@ -18,7 +20,16 @@ public class AccountService {
     }
 
     public AccountEntity findAccountById(Long accountId) {
-        return accountRepository.findById(accountId).orElseThrow(() -> new CustomException.NotFoundException("Account with account ID: " + accountId + " was not found in database."));
+        AccountEntity findAccount = accountRepository.findById(accountId).orElseThrow(() -> new CustomException.NotFoundException("Account with account ID: " + accountId + " was not found in database."));
+        return findAccount;
+    }
+
+    public ArrayList findAccountTransfers(Long accountId) {
+        ArrayList transactions = transactionRepository.findTransferEntityBySenderAccountId(accountId);
+        if (transactions == null) {
+            transactions.add("No transaction history");
+        }
+        return transactions;
     }
 
     public AccountEntity createAccount(UserEntity user) {
@@ -73,6 +84,7 @@ public class AccountService {
 
         return transactions;
     }
+
     public Iterable<AccountEntity> findAllAccounts() {
         Iterable<AccountEntity> accounts = accountRepository.findAll();
         if(accounts.equals(null))

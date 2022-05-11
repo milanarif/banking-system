@@ -55,7 +55,7 @@ requires 'ROLE.ADMIN' - Returns all loans
 ```java
 // Following requests require TOKEN in header
 GET 'http://localhost:8080/accounts/{accountId}'
-Returns user account
+Returns user account, user loan and transaction history
 
 Deposit money to user account
 PUT 'http://localhost:8080/accounts/deposit/{accountId}/?amount=500'
@@ -71,7 +71,7 @@ requires Sender accountId, Receiver accountId & amount(queryParam)
 'ROLE.USER' will get denied if senderAccountId and token does not match.
 
 GET 'http://localhost:8080/accounts/transactions'
-Returns all transactions
+requires 'ROLE.ADMIN' - Returns all transactions
 ```
 
 ### Statlogger
