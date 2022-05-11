@@ -66,7 +66,17 @@ PUT 'http://localhost:8080/accounts/withdraw/{accountId}/?amount=500'
 requires accountId & amount(queryParam)
 
 Transfer money between accounts
-PUT 'http://localhost:8080/accounts/withdraw/{senderAccountId}/{receiverAccountId}/?amount=500'
+PUT 'http://localhost:8080/accounts/transaction/{senderAccountId}/{receiverAccountId}/?amount=500'
 requires Sender accountId, Receiver accountId & amount(queryParam)
 'ROLE.USER' will get denied if senderAccountId and token does not match.
+
+GET 'http://localhost:8080/accounts/transactions'
+Returns all transactions
+```
+
+### Statlogger
+```java
+GET 'http://localhost:8081/logs/all'
+
+Returns logs of user authentiaction history
 ```

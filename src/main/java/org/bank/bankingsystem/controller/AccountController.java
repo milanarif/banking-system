@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +27,12 @@ public class AccountController {
     public ResponseEntity<AccountEntity> findAccountById(@PathVariable Long id) {
         AccountEntity account = accountService.findAccountById(id);
         return new ResponseEntity<>(account, HttpStatus.OK);
+    }
+
+    @GetMapping("/transactions")
+    public ResponseEntity<Iterable<TransferEntity>> getAllTransactions() {
+        Iterable transactions = accountService.getAllTransactions();
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 
     @PutMapping("/transaction/{senderId}/{receiverId}")
