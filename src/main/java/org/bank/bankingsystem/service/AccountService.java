@@ -53,7 +53,7 @@ public class AccountService {
     public AccountEntity withdraw(Long accountId, Long amount) {
         AccountEntity account = findAccountById(accountId);
         if (account.getFunds() < amount) {
-            throw new CustomException.InsufficientStorage("Insufficient funds");
+            throw new CustomException.InsufficientFundsException("Insufficient funds");
         }
         account.setFunds(account.getFunds() - amount);
         updateAccount(account);
@@ -64,7 +64,7 @@ public class AccountService {
         AccountEntity fromAccount = findAccountById(fromAccountId);
         AccountEntity toAccount = findAccountById(toAccountId);
         if (fromAccount.getFunds() < amount) {
-            throw new CustomException.InsufficientStorage("Insufficient funds");
+            throw new CustomException.InsufficientFundsException("Insufficient funds");
         }
         fromAccount.setFunds(fromAccount.getFunds() - amount);
         toAccount.setFunds(toAccount.getFunds() + amount);
