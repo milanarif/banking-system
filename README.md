@@ -1,8 +1,8 @@
 # Banking system
 
 ## Installation
+In order to start all services, make sure to place this repo and the statlogger-repo in the same parent directory. Then type 'docker compose up' in terminal when in this directory.
 
-//TODO
 
 ## Usage
 ### User services
