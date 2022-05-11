@@ -1,7 +1,9 @@
 package org.bank.bankingsystem;
 
 import org.bank.bankingsystem.entity.RoleEntity;
+import org.bank.bankingsystem.entity.UserEntity;
 import org.bank.bankingsystem.repository.RoleRepository;
+import org.bank.bankingsystem.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,15 +23,20 @@ public class BankingSystemApplication {
     }
 
 	@Bean
-    public CommandLineRunner setUpRoles(RoleRepository roleRepository) {
+    public CommandLineRunner systemInit(RoleRepository roleRepository, UserRepository userRepository) {
         return (args) -> {
-            RoleEntity findRoles = roleRepository.findByName("ROLE_ADMIN");
+           RoleEntity findRoles = roleRepository.findByName("ROLE_ADMIN");
+           if (findRoles == null) {
+               roleRepository.save(new RoleEntity("ROLE_ADMIN"));
+               roleRepository.save(new RoleEntity("ROLE_USER"));
 
-            if (findRoles == null) {
-                roleRepository.save(new RoleEntity("ROLE_ADMIN"));
-                roleRepository.save(new RoleEntity("ROLE_USER"));
-            }
-        };
+                UserEntity admin = new UserEntity();
+                admin.setName("Admin");
+                admin.setUsername("admin");
+                admin.setPassword(passwordEncoder().encode("admin"));
+                admin.addRole(roleRepository.findByName("ROLE_ADMIN"));
+                userRepository.save(admin);
+           }
+       };
     }
-
 }

@@ -17,8 +17,12 @@ public class CustomException extends RuntimeException {
         }
     }
 
-    public static class InsufficientStorage extends CustomException{
-        public InsufficientStorage(String message) { super(message); }
+    public static class InsufficientFundsException extends CustomException{
+        public InsufficientFundsException(String message) { super(message); }
+    }
+
+    public static class RemoveAdminException extends CustomException{
+        public RemoveAdminException(String message) { super(message); }
     }
 
     public static class UnauthorizedTransfer extends CustomException{
