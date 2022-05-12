@@ -26,7 +26,7 @@ requires JSON body
 
 // Following requests require TOKEN in header
 GET 'http://localhost:8080/users'
-Returns all users
+requires 'ROLE_ADMIN' - Returns all users
 
 GET 'http://localhost:8080/users/{userId}'
 Returns user
@@ -45,10 +45,10 @@ Delete user
 
 Create Loan
 PUT 'http://localhost:8080/users/createLoan/{userId}?amount=10000'
-requires 'ROLE.ADMIN', userId & amount(queryParam)
+requires 'ROLE_ADMIN', userId & amount(queryParam)
 
 GET 'http://localhost:8080/users/findAllLoans'
-requires 'ROLE.ADMIN' - Returns all loans
+requires 'ROLE_ADMIN' - Returns all loans
 ```
 
 ### Account services
@@ -68,15 +68,15 @@ requires accountId & amount(queryParam)
 Transfer money between accounts
 PUT 'http://localhost:8080/accounts/transaction/{senderAccountId}/{receiverAccountId}/?amount=500'
 requires Sender accountId, Receiver accountId & amount(queryParam)
-'ROLE.USER' will get denied if senderAccountId and token does not match.
 
 GET 'http://localhost:8080/accounts/transactions'
-requires 'ROLE.ADMIN' - Returns all transactions
+requires 'ROLE_ADMIN' - Returns all transactions
 ```
 
 ### Statlogger
 ```java
-GET 'http://localhost:8081/logs/all'
+GET 'http://localhost:8081/logs'
 
 Returns logs of user authentiaction history
+Requires ADMIN credentials in Basic auth
 ```

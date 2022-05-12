@@ -36,7 +36,7 @@ public class AccountController {
 
     @GetMapping("/transactions")
     public ResponseEntity<Iterable<TransferEntity>> getAllTransactions() {
-        Iterable transactions = accountService.getAllTransactions();
+        Iterable<TransferEntity> transactions = accountService.getAllTransactions();
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 

@@ -117,7 +117,7 @@ public class UserService {
     }
 
     public Iterable<UserEntity> findAllUsers() {
-        Iterable<UserEntity> users = (List<UserEntity>) userRepository.findAll();
+        Iterable<UserEntity> users = userRepository.findAll();
         if(users.equals(null))
             throw new CustomException.NotFoundException("No Users was found in database.");
         return users;
