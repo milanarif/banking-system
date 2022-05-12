@@ -14,14 +14,21 @@ services:
 
 
 # ACTIVEMQ CONTAINER
+#  activemq:
+#    build:
+#      ../.
+#    restart: unless-stopped
+#    ports:
+#      - 8161:8161
+#      - 61616:61616
+
+
   activemq:
-    build:
-      ../.
+    image: rmohr/activemq:5.15.9-alpine
     restart: unless-stopped
     ports:
       - 8161:8161
       - 61616:61616
-
 
 
 # BANK CONTAINER
